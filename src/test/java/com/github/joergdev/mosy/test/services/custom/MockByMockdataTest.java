@@ -22,8 +22,8 @@ public class MockByMockdataTest extends AbstractCustomServiceClientTest
   @Override
   protected void setPropertiesBaseData()
   {
-    apiBaseData.setMockActive(true);
-    apiBaseData.setMockActiveOnStartup(true);
+    apiBaseData.setMockActive(null);
+    apiBaseData.setMockActiveOnStartup(null);
     apiBaseData.setRecord(false);
     apiBaseData.setRoutingOnNoMockData(false);
   }
@@ -31,8 +31,8 @@ public class MockByMockdataTest extends AbstractCustomServiceClientTest
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockDisabled(false);
-    apiInterface.setMockDisabledOnStartup(false);
+    apiInterface.setMockActive(true);
+    apiInterface.setMockActiveOnStartup(false);
     apiInterface.setRecord(false);
     apiInterface.setRoutingOnNoMockData(false);
   }
@@ -41,8 +41,8 @@ public class MockByMockdataTest extends AbstractCustomServiceClientTest
   protected void setPropertiesInterfaceMethodForTest()
   {
     apiMethod.setRoutingOnNoMockData(false);
-    apiMethod.setMockDisabled(false);
-    apiMethod.setMockDisabledOnStartup(false);
+    apiMethod.setMockActive(false);
+    apiMethod.setMockActiveOnStartup(false);
     apiMethod.setRecord(false);
 
     addMockData("MD1", true, "1", "m_one_m");

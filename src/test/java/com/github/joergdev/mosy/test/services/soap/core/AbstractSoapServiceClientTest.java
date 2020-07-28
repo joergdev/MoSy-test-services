@@ -1,6 +1,7 @@
 package com.github.joergdev.mosy.test.services.soap.core;
 
 import static org.junit.Assert.*;
+import com.github.joergdev.mosy.api.client.Resources;
 import com.github.joergdev.mosy.api.model.Interface;
 import com.github.joergdev.mosy.api.model.InterfaceMethod;
 import com.github.joergdev.mosy.api.model.InterfaceType;
@@ -18,7 +19,7 @@ public abstract class AbstractSoapServiceClientTest extends AbstractServiceClien
 
     // set endpoint to mosy
     SoapServiceClientPortSingleton.getInstance()
-        .setUrl("http://localhost:3911/mosy/api/v_1_0/mock-services/soap/SoapService");
+        .setUrl(Resources.getProperty("api_endpoint") + "/mock-services/soap/SoapService");
   }
 
   protected Interface getDefaultInterface()

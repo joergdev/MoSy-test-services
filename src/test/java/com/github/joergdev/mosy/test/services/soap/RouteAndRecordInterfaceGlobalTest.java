@@ -25,27 +25,27 @@ public class RouteAndRecordInterfaceGlobalTest extends AbstractSoapServiceClient
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockDisabled(true);
-    apiInterface.setMockDisabledOnStartup(true);
-    apiInterface.setRecord(true);
-    apiInterface.setRoutingOnNoMockData(false);
+    apiInterface.setMockActive(null);
+    apiInterface.setMockActiveOnStartup(null);
+    apiInterface.setRecord(null);
+    apiInterface.setRoutingOnNoMockData(null);
   }
 
   @Override
   protected void setPropertiesInterfaceMethodForTest()
   {
-    apiMethod.setRoutingOnNoMockData(false);
-    apiMethod.setMockDisabled(true);
-    apiMethod.setMockDisabledOnStartup(true);
-    apiMethod.setRecord(false);
+    apiMethod.setRoutingOnNoMockData(true);
+    apiMethod.setMockActive(false);
+    apiMethod.setMockActiveOnStartup(false);
+    apiMethod.setRecord(true);
   }
 
   @Override
   protected void setPropertiesBaseData()
   {
-    apiBaseData.setMockActive(true);
-    apiBaseData.setMockActiveOnStartup(true);
-    apiBaseData.setRecord(false);
-    apiBaseData.setRoutingOnNoMockData(false);
+    apiBaseData.setMockActive(null);
+    apiBaseData.setMockActiveOnStartup(null);
+    apiBaseData.setRecord(null);
+    apiBaseData.setRoutingOnNoMockData(null);
   }
 }

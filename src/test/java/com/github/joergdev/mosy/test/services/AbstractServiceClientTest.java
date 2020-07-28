@@ -87,8 +87,8 @@ public abstract class AbstractServiceClientTest
   protected Interface getDefaultInterface()
   {
     Interface apiInterface = new Interface();
-    apiInterface.setMockDisabled(false);
-    apiInterface.setMockDisabledOnStartup(false);
+    apiInterface.setMockActive(true);
+    apiInterface.setMockActiveOnStartup(true);
     apiInterface.setRecord(false);
     apiInterface.setRoutingOnNoMockData(false);
 
@@ -99,8 +99,8 @@ public abstract class AbstractServiceClientTest
   {
     InterfaceMethod apiMethod = new InterfaceMethod();
     apiMethod.setRoutingOnNoMockData(false);
-    apiMethod.setMockDisabled(false);
-    apiMethod.setMockDisabledOnStartup(false);
+    apiMethod.setMockActive(true);
+    apiMethod.setMockActiveOnStartup(true);
     apiMethod.setRecord(false);
 
     return apiMethod;
@@ -146,8 +146,8 @@ public abstract class AbstractServiceClientTest
 
     apiMethod.setServicePath(target.getServicePath());
     apiMethod.setRoutingOnNoMockData(target.getRoutingOnNoMockData());
-    apiMethod.setMockDisabled(target.getMockDisabled());
-    apiMethod.setMockDisabledOnStartup(target.getMockDisabledOnStartup());
+    apiMethod.setMockActive(target.getMockActive());
+    apiMethod.setMockActiveOnStartup(target.getMockActiveOnStartup());
     apiMethod.setRecord(target.getRecord());
 
     // save
@@ -199,8 +199,8 @@ public abstract class AbstractServiceClientTest
     }
 
     apiInterface.setType(target.getType());
-    apiInterface.setMockDisabled(target.getMockDisabled());
-    apiInterface.setMockDisabledOnStartup(target.getMockDisabledOnStartup());
+    apiInterface.setMockActive(target.getMockActive());
+    apiInterface.setMockActiveOnStartup(target.getMockActiveOnStartup());
     apiInterface.setRecord(target.getRecord());
     apiInterface.setRoutingOnNoMockData(target.getRoutingOnNoMockData());
     apiInterface.setRoutingUrl(target.getRoutingUrl());

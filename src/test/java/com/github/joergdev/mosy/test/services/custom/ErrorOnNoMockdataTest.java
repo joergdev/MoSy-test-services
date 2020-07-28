@@ -39,16 +39,16 @@ public class ErrorOnNoMockdataTest extends AbstractCustomServiceClientTest
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockDisabled(false);
-    apiInterface.setMockDisabledOnStartup(false);
+    apiInterface.setMockActive(null);
+    apiInterface.setMockActiveOnStartup(null);
     apiInterface.setRecord(false);
   }
 
   @Override
   protected void setPropertiesInterfaceMethodForTest()
   {
-    apiMethod.setMockDisabled(false);
-    apiMethod.setMockDisabledOnStartup(false);
+    apiMethod.setMockActive(false);
+    apiMethod.setMockActiveOnStartup(false);
     apiMethod.setRecord(false);
 
     MockSession apiMockSession = mosyClient.createMocksession().getMockSession();

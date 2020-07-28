@@ -30,25 +30,25 @@ public class RecordByRecordConfigTest extends AbstractSoapServiceClientTest
   {
     apiBaseData.setMockActive(false);
     apiBaseData.setMockActiveOnStartup(false);
-    apiBaseData.setRecord(false);
+    apiBaseData.setRecord(null);
     apiBaseData.setRoutingOnNoMockData(true);
   }
 
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockDisabled(false);
-    apiInterface.setMockDisabledOnStartup(false);
-    apiInterface.setRecord(false);
+    apiInterface.setMockActive(true);
+    apiInterface.setMockActiveOnStartup(true);
+    apiInterface.setRecord(null);
     apiInterface.setRoutingOnNoMockData(true);
   }
 
   @Override
   protected void setPropertiesInterfaceMethodForTest()
   {
-    apiMethod.setMockDisabled(false);
-    apiMethod.setMockDisabledOnStartup(false);
-    apiMethod.setRecord(false);
+    apiMethod.setMockActive(true);
+    apiMethod.setMockActiveOnStartup(true);
+    apiMethod.setRecord(null);
     apiMethod.setRoutingOnNoMockData(true);
 
     addRecordConfig("RC1", false, "1");

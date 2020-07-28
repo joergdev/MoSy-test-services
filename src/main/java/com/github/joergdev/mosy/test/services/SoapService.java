@@ -2,7 +2,6 @@ package com.github.joergdev.mosy.test.services;
 
 import javax.xml.ws.Endpoint;
 
-@SuppressWarnings("restriction")
 public class SoapService
 {
   public static void main(String[] args)

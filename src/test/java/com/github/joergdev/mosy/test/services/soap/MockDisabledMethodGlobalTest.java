@@ -17,8 +17,8 @@ public class MockDisabledMethodGlobalTest extends AbstractSoapServiceClientTest
   @Override
   protected void setPropertiesBaseData()
   {
-    apiBaseData.setMockActive(true);
-    apiBaseData.setMockActiveOnStartup(true);
+    apiBaseData.setMockActive(null);
+    apiBaseData.setMockActiveOnStartup(null);
     apiBaseData.setRecord(false);
     apiBaseData.setRoutingOnNoMockData(true);
   }
@@ -26,8 +26,8 @@ public class MockDisabledMethodGlobalTest extends AbstractSoapServiceClientTest
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockDisabled(false);
-    apiInterface.setMockDisabledOnStartup(false);
+    apiInterface.setMockActive(null);
+    apiInterface.setMockActiveOnStartup(null);
     apiInterface.setRecord(false);
     apiInterface.setRoutingOnNoMockData(true);
   }
@@ -35,8 +35,8 @@ public class MockDisabledMethodGlobalTest extends AbstractSoapServiceClientTest
   @Override
   protected void setPropertiesInterfaceMethodForTest()
   {
-    apiMethod.setMockDisabled(true);
-    apiMethod.setMockDisabledOnStartup(true);
+    apiMethod.setMockActive(false);
+    apiMethod.setMockActiveOnStartup(false);
     apiMethod.setRecord(false);
     apiMethod.setRoutingOnNoMockData(true);
 

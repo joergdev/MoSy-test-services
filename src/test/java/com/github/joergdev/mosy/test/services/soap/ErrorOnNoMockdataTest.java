@@ -31,8 +31,8 @@ public class ErrorOnNoMockdataTest extends AbstractSoapServiceClientTest
   @Override
   protected void setPropertiesBaseData()
   {
-    apiBaseData.setMockActive(true);
-    apiBaseData.setMockActiveOnStartup(true);
+    apiBaseData.setMockActive(null);
+    apiBaseData.setMockActiveOnStartup(null);
     apiBaseData.setRecord(false);
     apiBaseData.setRoutingOnNoMockData(false);
   }
@@ -40,8 +40,8 @@ public class ErrorOnNoMockdataTest extends AbstractSoapServiceClientTest
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockDisabled(false);
-    apiInterface.setMockDisabledOnStartup(false);
+    apiInterface.setMockActive(null);
+    apiInterface.setMockActiveOnStartup(null);
     apiInterface.setRecord(false);
     apiInterface.setRoutingOnNoMockData(false);
   }
@@ -50,8 +50,8 @@ public class ErrorOnNoMockdataTest extends AbstractSoapServiceClientTest
   protected void setPropertiesInterfaceMethodForTest()
   {
     apiMethod.setRoutingOnNoMockData(false);
-    apiMethod.setMockDisabled(false);
-    apiMethod.setMockDisabledOnStartup(false);
+    apiMethod.setMockActive(true);
+    apiMethod.setMockActiveOnStartup(true);
     apiMethod.setRecord(false);
 
     MockSession apiMockSession = mosyClient.createMocksession().getMockSession();
