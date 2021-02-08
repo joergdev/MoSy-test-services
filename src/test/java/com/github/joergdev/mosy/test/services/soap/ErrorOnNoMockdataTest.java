@@ -1,7 +1,6 @@
 package com.github.joergdev.mosy.test.services.soap;
 
 import static org.junit.Assert.*;
-import com.github.joergdev.mosy.api.model.MockSession;
 import com.github.joergdev.mosy.test.services.soap.core.AbstractSoapServiceClientTest;
 
 public class ErrorOnNoMockdataTest extends AbstractSoapServiceClientTest
@@ -54,10 +53,8 @@ public class ErrorOnNoMockdataTest extends AbstractSoapServiceClientTest
     apiMethod.setMockActiveOnStartup(true);
     apiMethod.setRecord(false);
 
-    MockSession apiMockSession = mosyClient.createMocksession().getMockSession();
-
     addMockData("MD1", true, "1", "m_one_m");
     addMockData("MD2", false, "2", "m_two_m");
-    addMockData("MD2_MS", true, "2", "ms_two_ms", apiMockSession);
+    addMockData("MD2_MP", true, "2", "mp_two_mp", createMockProfile("test1", false));
   }
 }

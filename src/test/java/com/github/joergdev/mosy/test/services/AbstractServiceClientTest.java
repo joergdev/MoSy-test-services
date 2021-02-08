@@ -11,9 +11,10 @@ import com.github.joergdev.mosy.api.model.BaseData;
 import com.github.joergdev.mosy.api.model.Interface;
 import com.github.joergdev.mosy.api.model.InterfaceMethod;
 import com.github.joergdev.mosy.api.model.MockData;
-import com.github.joergdev.mosy.api.model.MockSession;
+import com.github.joergdev.mosy.api.model.MockProfile;
 import com.github.joergdev.mosy.api.model.Record;
 import com.github.joergdev.mosy.api.model.RecordConfig;
+import com.github.joergdev.mosy.api.model.RecordSession;
 
 public abstract class AbstractServiceClientTest
 {
@@ -42,6 +43,8 @@ public abstract class AbstractServiceClientTest
 
     setPropertiesInterfaceMethodForTest();
     assureInterfaceMethodExists();
+
+    clearRecords();
 
     _before();
   }
@@ -79,7 +82,8 @@ public abstract class AbstractServiceClientTest
     apiBaseData.setMockActiveOnStartup(true);
     apiBaseData.setRecord(false);
     apiBaseData.setRoutingOnNoMockData(false);
-    apiBaseData.setTtlMockSession(86400);
+    apiBaseData.setTtlMockProfile(86400);
+    apiBaseData.setTtlRecordSession(86400);
 
     return apiBaseData;
   }
@@ -213,20 +217,36 @@ public abstract class AbstractServiceClientTest
     this.apiInterface = apiInterface;
   }
 
+  protected RecordSession addRecordSession()
+  {
+    return mosyClient.createRecordSession().getRecordSession();
+  }
+
   protected void addMockData(String title, boolean active, String requestAction, String returnValue)
   {
-    addMockData(title, active, requestAction, returnValue, null);
+    addMockData(title, active, requestAction, returnValue, false);
   }
 
   protected void addMockData(String title, boolean active, String requestAction, String returnValue,
-                             MockSession apiMockSession)
+                             boolean common)
+  {
+    addMockData(title, active, requestAction, returnValue, null, common);
+  }
+
+  protected void addMockData(String title, boolean active, String requestAction, String returnValue,
+                             MockProfile apiMockProfile, boolean common)
   {
     MockData md1 = new MockData();
     md1.setActive(active);
     md1.setTitle(title);
-    md1.setMockSession(apiMockSession);
     md1.setRequest(requestAction);
     md1.setResponse(returnValue);
+    md1.setCommon(common);
+
+    if (apiMockProfile != null)
+    {
+      md1.getMockProfiles().add(apiMockProfile);
+    }
 
     apiMethod.getMockData().add(md1);
   }
@@ -243,10 +263,16 @@ public abstract class AbstractServiceClientTest
 
   protected List<Record> checkRecordsSaved(LocalDateTime ldtStart, long expectedCountRecords)
   {
+    return checkRecordsSaved(ldtStart, expectedCountRecords, null);
+  }
+
+  protected List<Record> checkRecordsSaved(LocalDateTime ldtStart, long expectedCountRecords,
+                                           Integer recordSessionID)
+  {
     LocalDateTime ldtEnd = LocalDateTime.now().withNano(0).plusSeconds(1);
 
     // check records saved
-    List<Record> records = mosyClient.loadRecords(null, null).getRecords();
+    List<Record> records = mosyClient.loadRecords(null, null, recordSessionID).getRecords();
 
     List<Record> recordsInRange = records.stream()
         .filter(r -> r.getInterfaceMethod().getInterfaceMethodId().equals(apiMethod.getInterfaceMethodId())
@@ -259,5 +285,21 @@ public abstract class AbstractServiceClientTest
     assertEquals(expectedCountRecords, countRecords);
 
     return recordsInRange;
+  }
+
+  protected MockProfile createMockProfile(String name, boolean useCommonMocks)
+  {
+    MockProfile apiMockProfile = new MockProfile();
+    apiMockProfile.setName(name);
+    apiMockProfile.setUseCommonMocks(useCommonMocks);
+
+    return mosyClient.saveMockProfile(apiMockProfile).getMockProfile();
+  }
+
+  private void clearRecords()
+  {
+    List<Record> records = mosyClient.loadRecords(null, null, null).getRecords();
+
+    records.forEach(r -> mosyClient.deleteRecord(r.getRecordId()));
   }
 }

@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import com.github.joergdev.mosy.api.model.Interface;
 import com.github.joergdev.mosy.api.model.InterfaceMethod;
 import com.github.joergdev.mosy.api.model.InterfaceType;
-import com.github.joergdev.mosy.api.model.MockSession;
+import com.github.joergdev.mosy.api.model.MockProfile;
 import com.github.joergdev.mosy.api.model.Record;
 import com.github.joergdev.mosy.api.request.mockservices.CustomRequestRequest;
 import com.github.joergdev.mosy.api.response.mockservices.CustomRequestResponse;
@@ -51,10 +51,11 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
   protected void invokeCustomCall(String request, String assertion)
     throws Exception
   {
-    invokeCustomCall(request, assertion, null);
+    invokeCustomCall(request, assertion, null, null);
   }
 
-  protected void invokeCustomCall(String request, String assertion, Integer mockSessionID)
+  protected void invokeCustomCall(String request, String assertion, Integer mockSessionID,
+                                  Integer recordSessionID)
     throws Exception
   {
     request = "<action>" + request + "</action>";
@@ -64,7 +65,7 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
     req.setInterfaceMethod("getRequestedData");
     req.setRequest(request);
 
-    CustomRequestResponse response = mosyClient.customRequest(req, mockSessionID);
+    CustomRequestResponse response = mosyClient.customRequest(req, mockSessionID, recordSessionID);
 
     String result = null;
 
@@ -94,7 +95,13 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
   }
 
   protected void addMockData(String title, boolean active, String requestAction, String returnValue,
-                             MockSession apiMockSession)
+                             MockProfile apiMockProfile)
+  {
+    addMockData(title, active, requestAction, returnValue, apiMockProfile, false);
+  }
+
+  protected void addMockData(String title, boolean active, String requestAction, String returnValue,
+                             MockProfile apiMockProfile, boolean common)
   {
     if (requestAction != null)
     {
@@ -103,7 +110,7 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
 
     returnValue = "<return>" + returnValue + "</return>";
 
-    super.addMockData(title, active, requestAction, returnValue, apiMockSession);
+    super.addMockData(title, active, requestAction, returnValue, apiMockProfile, common);
   }
 
   protected void addRecordConfig(String title, boolean enabled, String requestAction)
