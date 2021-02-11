@@ -1,7 +1,7 @@
 package com.github.joergdev.mosy.test.services.custom;
 
 import static org.junit.Assert.*;
-import com.github.joergdev.mosy.api.model.MockSession;
+import com.github.joergdev.mosy.api.model.MockProfile;
 import com.github.joergdev.mosy.test.services.custom.core.AbstractCustomServiceClientTest;
 
 public class ErrorOnNoMockdataTest extends AbstractCustomServiceClientTest
@@ -51,10 +51,10 @@ public class ErrorOnNoMockdataTest extends AbstractCustomServiceClientTest
     apiMethod.setMockActiveOnStartup(false);
     apiMethod.setRecord(false);
 
-    MockSession apiMockSession = mosyClient.createMocksession().getMockSession();
+    MockProfile apiMockProfile = createMockProfile("test", false);
 
     addMockData("MD1", true, "1", "m_one_m");
     addMockData("MD2", false, "2", "m_two_m");
-    addMockData("MD2_MS", true, "2", "ms_two_ms", apiMockSession);
+    addMockData("MD2_MS", true, "2", "ms_two_ms", apiMockProfile);
   }
 }

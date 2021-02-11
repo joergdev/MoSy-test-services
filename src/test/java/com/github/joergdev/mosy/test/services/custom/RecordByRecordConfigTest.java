@@ -19,7 +19,6 @@ public class RecordByRecordConfigTest extends AbstractCustomServiceClientTest
     invokeCustomCall("2", "two");
     invokeCustomCall("3", "three");
 
-    // TODO
     List<Record> records = checkRecordsSaved(ldtStart, 1);
 
     Record rec = mosyClient.loadRecord(records.get(0).getRecordId()).getRecord();
