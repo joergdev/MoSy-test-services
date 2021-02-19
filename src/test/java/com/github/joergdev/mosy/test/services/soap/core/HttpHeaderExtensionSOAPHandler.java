@@ -16,11 +16,11 @@ public class HttpHeaderExtensionSOAPHandler implements SOAPHandler<SOAPMessageCo
   @Override
   public boolean handleMessage(SOAPMessageContext context)
   {
-    Integer mockProfileID = SoapServiceClientPortSingleton.SOAP_MOCK_PROFILE_ID.get();
+    String mockProfileName = SoapServiceClientPortSingleton.SOAP_MOCK_PROFILE_NAME.get();
     Integer recordSessionID = SoapServiceClientPortSingleton.SOAP_RECORD_SESSION_ID.get();
 
     if (Boolean.TRUE.equals(context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY))
-        && (mockProfileID != null || recordSessionID != null))
+        && (mockProfileName != null || recordSessionID != null))
     {
       @SuppressWarnings("unchecked")
       Map<String, List<String>> requestHeaders = (Map<String, List<String>>) context
@@ -31,10 +31,10 @@ public class HttpHeaderExtensionSOAPHandler implements SOAPHandler<SOAPMessageCo
         context.put(MessageContext.HTTP_REQUEST_HEADERS, requestHeaders);
       }
 
-      if (mockProfileID != null)
+      if (mockProfileName != null)
       {
-        requestHeaders.put(APIConstants.HTTP_HEADER_MOCK_PROFILE_ID,
-            Collections.singletonList(String.valueOf(mockProfileID)));
+        requestHeaders.put(APIConstants.HTTP_HEADER_MOCK_PROFILE_NAME,
+            Collections.singletonList(mockProfileName));
       }
 
       if (recordSessionID != null)

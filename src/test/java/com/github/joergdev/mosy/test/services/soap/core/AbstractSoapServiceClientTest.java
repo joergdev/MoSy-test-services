@@ -48,11 +48,11 @@ public abstract class AbstractSoapServiceClientTest extends AbstractServiceClien
     invokeWsCall(request, assertion, null, null);
   }
 
-  protected void invokeWsCall(String request, String assertion, Integer mockProfileID,
+  protected void invokeWsCall(String request, String assertion, String mockProfileName,
                               Integer recordSessionID)
     throws Exception
   {
-    String result = SoapServiceClientPortSingleton.getInstance().invoke(request, mockProfileID,
+    String result = SoapServiceClientPortSingleton.getInstance().invoke(request, mockProfileName,
         recordSessionID);
 
     assertEquals(assertion, result);

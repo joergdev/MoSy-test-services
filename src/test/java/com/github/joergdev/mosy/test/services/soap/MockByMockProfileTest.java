@@ -16,14 +16,22 @@ public class MockByMockProfileTest extends AbstractSoapServiceClientTest
     throws Exception
   {
     // Mockdata active for mockSession matching
-    invokeWsCall("1", "ms1_one_ms1", apiMockProfileActiveCommonMockdataUsage.getMockProfileID(), null);
+    invokeWsCall("1", "ms1_one_ms1", apiMockProfileActiveCommonMockdataUsage.getName(), null);
+
+    /*
+     * TODO
+    
+    org.junit.ComparisonFailure: expected:<m[s1_one_ms1]> but was:<m[_one_m]>
+    
+    
+     */
 
     // second call has to fail, there are 2 mockdata 
     // but first is inactive, second is related to other mockSession
 
     try
     {
-      invokeWsCall("2", null, apiMockProfileActiveCommonMockdataUsage.getMockProfileID(), null);
+      invokeWsCall("2", null, apiMockProfileActiveCommonMockdataUsage.getName(), null);
 
       fail("no SOAPFaultException");
     }
@@ -34,15 +42,15 @@ public class MockByMockProfileTest extends AbstractSoapServiceClientTest
     }
 
     // Mockdata active for mockSession matching
-    invokeWsCall("3", "ms1_three_ms1", apiMockProfileActiveCommonMockdataUsage.getMockProfileID(), null);
+    invokeWsCall("3", "ms1_three_ms1", apiMockProfileActiveCommonMockdataUsage.getName(), null);
 
     // Mockdata inactive for mockSession matching, mockdata wihtout mockSession matching (common usage)
-    invokeWsCall("4", "m_four_m", apiMockProfileActiveCommonMockdataUsage.getMockProfileID(), null);
+    invokeWsCall("4", "m_four_m", apiMockProfileActiveCommonMockdataUsage.getName(), null);
 
     // Mockdata incative for mocksession matching, mockdata wihtout mockSession matching - but non common usage
     try
     {
-      invokeWsCall("5", "ms3_five_ms3", apiMockProfileActiveNoCommonMockdataUsage.getMockProfileID(), null);
+      invokeWsCall("5", "ms3_five_ms3", apiMockProfileActiveNoCommonMockdataUsage.getName(), null);
 
       fail("no SOAPFaultException");
     }
@@ -53,19 +61,19 @@ public class MockByMockProfileTest extends AbstractSoapServiceClientTest
     }
 
     // Mockdata active for mocksession matching
-    invokeWsCall("6", "ms3_six_ms3", apiMockProfileActiveNoCommonMockdataUsage.getMockProfileID(), null);
+    invokeWsCall("6", "ms3_six_ms3", apiMockProfileActiveNoCommonMockdataUsage.getName(), null);
 
     // TODO
     // mockdata common existring for mockProfile
-    invokeWsCall("7", "ms2_seven_ms2", apiMockProfileActiveCommonMockdataUsage.getMockProfileID(), null);
+    invokeWsCall("7", "ms2_seven_ms2", apiMockProfileActiveCommonMockdataUsage.getName(), null);
 
     // mockdata common (not for mockprofile) / mockprofile use common
-    invokeWsCall("8", "ms2_eight_ms2", apiMockProfileActiveCommonMockdataUsage.getMockProfileID(), null);
+    invokeWsCall("8", "ms2_eight_ms2", apiMockProfileActiveCommonMockdataUsage.getName(), null);
 
     // mockdata not common / mockprofile use common
     try
     {
-      invokeWsCall("9", "ms2_nine_ms2", apiMockProfileActiveCommonMockdataUsage.getMockProfileID(), null);
+      invokeWsCall("9", "ms2_nine_ms2", apiMockProfileActiveCommonMockdataUsage.getName(), null);
 
       fail("no SOAPFaultException");
     }

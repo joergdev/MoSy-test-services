@@ -54,7 +54,7 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
     invokeCustomCall(request, assertion, null, null);
   }
 
-  protected void invokeCustomCall(String request, String assertion, Integer mockSessionID,
+  protected void invokeCustomCall(String request, String assertion, String mockProfileName,
                                   Integer recordSessionID)
     throws Exception
   {
@@ -65,7 +65,7 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
     req.setInterfaceMethod("getRequestedData");
     req.setRequest(request);
 
-    CustomRequestResponse response = mosyClient.customRequest(req, mockSessionID, recordSessionID);
+    CustomRequestResponse response = mosyClient.customRequest(req, mockProfileName, recordSessionID);
 
     String result = null;
 

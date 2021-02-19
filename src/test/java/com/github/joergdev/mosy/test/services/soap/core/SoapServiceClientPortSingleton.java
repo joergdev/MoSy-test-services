@@ -2,7 +2,7 @@ package com.github.joergdev.mosy.test.services.soap.core;
 
 public class SoapServiceClientPortSingleton
 {
-  static final ThreadLocal<Integer> SOAP_MOCK_PROFILE_ID = new ThreadLocal<>();
+  static final ThreadLocal<String> SOAP_MOCK_PROFILE_NAME = new ThreadLocal<>();
   static final ThreadLocal<Integer> SOAP_RECORD_SESSION_ID = new ThreadLocal<>();
 
   private static SoapServiceClientPortSingleton instance = null;
@@ -40,10 +40,10 @@ public class SoapServiceClientPortSingleton
     }
   }
 
-  public String invoke(String request, Integer mockProfileID, Integer recordSessionID)
+  public String invoke(String request, String mockProfileName, Integer recordSessionID)
     throws Exception
   {
-    SOAP_MOCK_PROFILE_ID.set(mockProfileID);
+    SOAP_MOCK_PROFILE_NAME.set(mockProfileName);
     SOAP_RECORD_SESSION_ID.set(recordSessionID);
 
     return service.testMethod(request);
