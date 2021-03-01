@@ -2,8 +2,8 @@
 <handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
     <handler-chain>
         <handler>
-            <handler-name>com.github.joergdev.mosy.test.services.soap.core.HttpHeaderExtensionSOAPHandler</handler-name>
-            <handler-class>com.github.joergdev.mosy.test.services.soap.core.HttpHeaderExtensionSOAPHandler</handler-class>
+            <handler-name>de.joergdev.mosy.test.services.soap.core.HttpHeaderExtensionSOAPHandler</handler-name>
+            <handler-class>de.joergdev.mosy.test.services.soap.core.HttpHeaderExtensionSOAPHandler</handler-class>
         </handler>
     </handler-chain>
 </handler-chains>
