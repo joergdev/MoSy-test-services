@@ -110,7 +110,7 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
 
     returnValue = "<return>" + returnValue + "</return>";
 
-    super.addMockData(title, active, requestAction, returnValue, apiMockProfile, common);
+    super.addMockData(title, active, requestAction, returnValue, apiMockProfile, common, null);
   }
 
   protected void addRecordConfig(String title, boolean enabled, String requestAction)

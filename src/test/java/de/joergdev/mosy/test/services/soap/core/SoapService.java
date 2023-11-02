@@ -7,7 +7,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-@WebService(name = "SoapService", targetNamespace = "http://services.test.mosy.joergdev.github.com/")
+@WebService(name = "SoapService", targetNamespace = "http://services.test.mosy.joergdev.de/")
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public interface SoapService
 {

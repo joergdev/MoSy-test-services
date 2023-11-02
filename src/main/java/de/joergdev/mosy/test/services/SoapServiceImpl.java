@@ -6,7 +6,6 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
-@SuppressWarnings("restriction")
 @WebService(name = "SoapService", serviceName = "SoapService")
 @SOAPBinding(style = Style.RPC)
 public class SoapServiceImpl
