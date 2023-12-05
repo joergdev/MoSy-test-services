@@ -38,8 +38,18 @@ public class RouteAndRecordTest extends AbstractRestServiceClientTest
             Utils.mapEntry("subpartid", "444")),
         new Subpart("subpartX", 7), 200, Utils.object2Json(new Subpart("subpartX", 7)));
 
+    // urlArg docu not defined in mockData => same response as without arg
+    invokeWsCall(apiMethodPOSTSubparts, //
+        Utils.mapOfEntries( //
+            Utils.mapEntry("id", "222"), //
+            Utils.mapEntry("partid", "333"), //
+            Utils.mapEntry("subpartid", "444")),
+        Utils.mapOfEntries( //
+            Utils.mapEntry("docu", "true")), //
+        new Subpart("subpartX", 7), null, null, 200, Utils.object2Json(new Subpart("subpartX", 7)));
+
     // check Records
-    List<Record> records = checkRecordsSaved(ldtStart, 7);
+    List<Record> records = checkRecordsSaved(ldtStart, 8);
 
     checkRecord(records, 0, null, null, null, 200, Utils.formatJSON(
         "{\"cars\":[{\"id\":1,\"type\":\"Audi\",\"age\":5},{\"id\":2,\"type\":\"VW\",\"age\":1},{\"id\":3,\"type\":\"BMW\",\"age\":10}]}",
@@ -65,6 +75,14 @@ public class RouteAndRecordTest extends AbstractRestServiceClientTest
         Utils.mapEntry("partid", "333"), //
         Utils.mapEntry("subpartid", "444")), //
         null, Utils.formatJSON(Utils.object2Json(new Subpart("subpartX", 7), false), true), 200,
+        Utils.formatJSON(Utils.object2Json(new Subpart("subpartX", 7)), true));
+
+    checkRecord(records, 7, Utils.mapOfEntries( //
+        Utils.mapEntry("id", "222"), //
+        Utils.mapEntry("partid", "333"), //
+        Utils.mapEntry("subpartid", "444")), //
+        Utils.mapOfEntries(Utils.mapEntry("docu", "true")),
+        Utils.formatJSON(Utils.object2Json(new Subpart("subpartX", 7), false), true), 200,
         Utils.formatJSON(Utils.object2Json(new Subpart("subpartX", 7)), true));
   }
 
