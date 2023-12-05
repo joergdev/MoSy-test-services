@@ -20,6 +20,10 @@ public class RouteAndRecordTest extends AbstractRestServiceClientTest
     invokeWsCall(apiMethodGET, 200,
         "{\"cars\":[{\"id\":1,\"type\":\"Audi\",\"age\":5},{\"id\":2,\"type\":\"VW\",\"age\":1},{\"id\":3,\"type\":\"BMW\",\"age\":10}]}");
 
+    invokeWsCall(apiMethod, 200,
+        "{\"cars\":[{\"id\":1,\"type\":\"Audi\",\"age\":5},{\"id\":2,\"type\":\"VW\",\"age\":1},{\"id\":3,\"type\":\"BMW\",\"age\":10}]}",
+        Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")));
+
     invokeWsCall(apiMethodDELETE, Utils.mapOfEntries(Utils.mapEntry("id", "666")), 410, null);
     invokeWsCall(apiMethodDELETE, Utils.mapOfEntries(Utils.mapEntry("id", "777")), 410, "Already deleted");
     invokeWsCall(apiMethodDELETE, Utils.mapOfEntries(Utils.mapEntry("id", "123")), 202,
@@ -35,25 +39,32 @@ public class RouteAndRecordTest extends AbstractRestServiceClientTest
         new Subpart("subpartX", 7), 200, Utils.object2Json(new Subpart("subpartX", 7)));
 
     // check Records
-    List<Record> records = checkRecordsSaved(ldtStart, 6);
+    List<Record> records = checkRecordsSaved(ldtStart, 7);
 
-    checkRecord(records, 0, null, null, 200, Utils.formatJSON(
+    checkRecord(records, 0, null, null, null, 200, Utils.formatJSON(
         "{\"cars\":[{\"id\":1,\"type\":\"Audi\",\"age\":5},{\"id\":2,\"type\":\"VW\",\"age\":1},{\"id\":3,\"type\":\"BMW\",\"age\":10}]}",
         true));
 
-    checkRecord(records, 1, Utils.mapOfEntries(Utils.mapEntry("id", "666")), null, 410, null);
-    checkRecord(records, 2, Utils.mapOfEntries(Utils.mapEntry("id", "777")), null, 410, "Already deleted");
-    checkRecord(records, 3, Utils.mapOfEntries(Utils.mapEntry("id", "123")), null, 202,
+    checkRecord(records, 1, null,
+        Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")), null, 200,
+        Utils.formatJSON(
+            "{\"cars\":[{\"id\":1,\"type\":\"Audi\",\"age\":5},{\"id\":2,\"type\":\"VW\",\"age\":1},{\"id\":3,\"type\":\"BMW\",\"age\":10}]}",
+            true));
+
+    checkRecord(records, 2, Utils.mapOfEntries(Utils.mapEntry("id", "666")), null, null, 410, null);
+    checkRecord(records, 3, Utils.mapOfEntries(Utils.mapEntry("id", "777")), null, null, 410,
+        "Already deleted");
+    checkRecord(records, 4, Utils.mapOfEntries(Utils.mapEntry("id", "123")), null, null, 202,
         "Deleted /api/cars/123");
 
-    checkRecord(records, 4, null, Utils.formatJSON(Utils.object2Json(new Car("Audi", 10), false), true), 200,
-        Utils.formatJSON(Utils.object2Json(new Car(123, "Audi", 10)), true));
+    checkRecord(records, 5, null, null, Utils.formatJSON(Utils.object2Json(new Car("Audi", 10), false), true),
+        200, Utils.formatJSON(Utils.object2Json(new Car(123, "Audi", 10)), true));
 
-    checkRecord(records, 5, Utils.mapOfEntries( //
+    checkRecord(records, 6, Utils.mapOfEntries( //
         Utils.mapEntry("id", "222"), //
         Utils.mapEntry("partid", "333"), //
         Utils.mapEntry("subpartid", "444")), //
-        Utils.formatJSON(Utils.object2Json(new Subpart("subpartX", 7), false), true), 200,
+        null, Utils.formatJSON(Utils.object2Json(new Subpart("subpartX", 7), false), true), 200,
         Utils.formatJSON(Utils.object2Json(new Subpart("subpartX", 7)), true));
   }
 

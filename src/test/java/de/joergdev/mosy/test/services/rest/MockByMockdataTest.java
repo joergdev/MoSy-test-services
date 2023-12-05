@@ -10,6 +10,9 @@ import de.joergdev.mosy.test.services.rest.model.Subpart;
 public class MockByMockdataTest extends AbstractRestServiceClientTest
 {
   private static final String MOCK_RESULT_GET_CARS = "{\"cars\":[{\"type\":\"Audi\",\"age\":9},{\"type\":\"VW\",\"age\":8},{\"type\":\"BMW\",\"age\":7}]}";
+  private static final String MOCK_RESULT_GET_CARS_DEV = "{\"cars\":[{\"type\":\"Audi\",\"age\":9},{\"type\":\"VW\",\"age\":8},{\"type\":\"BMW_dev\",\"age\":7}]}";
+  private static final String MOCK_RESULT_GET_CARS_TEST = "{\"cars\":[{\"type\":\"Audi\",\"age\":9},{\"type\":\"VW\",\"age\":8},{\"type\":\"BMW_test\",\"age\":7}]}";
+  private static final String MOCK_RESULT_GET_CARS_TEST_AGE5 = "{\"cars\":[{\"type\":\"Audi\",\"age\":5},{\"type\":\"VW\",\"age\":5},{\"type\":\"BMW_test\",\"age\":5}]}";
 
   private static final String MOCK_RESULT_PUT_CAR_123 = "{\"id\":123,\"type\":\"Fiat\",\"age\":5}";
   private static final String MOCK_RESULT_PUT_CAR_1234 = "{\"id\":1234,\"type\":\"Fiat\",\"age\":6}";
@@ -24,8 +27,28 @@ public class MockByMockdataTest extends AbstractRestServiceClientTest
     // GET 200
     invokeWsCall(apiMethod, 200, MOCK_RESULT_GET_CARS);
 
+    // GET 200 - urlArg stage=dev
+    invokeWsCall(apiMethod, 200, MOCK_RESULT_GET_CARS_DEV,
+        Utils.mapOfEntries(Utils.mapEntry("stage", "dev")));
+
+    // GET 200 - urlArg stage=test
+    invokeWsCall(apiMethod, 200, MOCK_RESULT_GET_CARS_TEST,
+        Utils.mapOfEntries(Utils.mapEntry("stage", "test")));
+
+    // GET 200 - urlArg stage=test&age=5
+    invokeWsCall(apiMethod, 200, MOCK_RESULT_GET_CARS_TEST_AGE5,
+        Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")));
+
+    // GET 200 - urlArg stage=nonexists => no match for urlArg, may return result for get common
+    invokeWsCall(apiMethod, 200, MOCK_RESULT_GET_CARS,
+        Utils.mapOfEntries(Utils.mapEntry("stage", "nonexists")));
+
+    // GET 200 - urlArg stage=test&age=6 => no match for urlArg age=6, may return result for get with urlArg stage=test
+    invokeWsCall(apiMethod, 200, MOCK_RESULT_GET_CARS_TEST,
+        Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "6")));
+
     // GET 404
-    invokeWsCall(apiMethod, 404, "MP1", null);
+    invokeWsCall(apiMethod, 404, "MP1", (String) null);
 
     // PUT 201
     invokeWsCall(apiMethodPUT, new Car(123, "Fiat alt", 5), 201, MOCK_RESULT_PUT_CAR_123);
@@ -173,6 +196,15 @@ public class MockByMockdataTest extends AbstractRestServiceClientTest
     // mock is active for all methods
 
     addMockData(apiMethod, "MD1_get", true, null, MOCK_RESULT_GET_CARS, 200);
+
+    addMockData(apiMethod, "MD1_get_urlArg_stageDev", true, null, MOCK_RESULT_GET_CARS_DEV, null, true, 200,
+        null, Utils.mapOfEntries(Utils.mapEntry("stage", "dev")));
+
+    addMockData(apiMethod, "MD1_get_urlArg_stageTest", true, null, MOCK_RESULT_GET_CARS_TEST, null, true, 200,
+        null, Utils.mapOfEntries(Utils.mapEntry("stage", "test")));
+
+    addMockData(apiMethod, "MD1_get_urlArg_stageTest_age5", true, null, MOCK_RESULT_GET_CARS_TEST_AGE5, null,
+        true, 200, null, Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")));
 
     MockProfile mp1 = createMockProfile("MP1", false);
     addMockData(apiMethod, "MD1_get_404", true, null, null, mp1, false, 404);

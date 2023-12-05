@@ -18,6 +18,7 @@ import de.joergdev.mosy.api.model.PathParam;
 import de.joergdev.mosy.api.model.Record;
 import de.joergdev.mosy.api.model.RecordConfig;
 import de.joergdev.mosy.api.model.RecordSession;
+import de.joergdev.mosy.api.model.UrlArgument;
 import de.joergdev.mosy.backend.standalone.ApplicationMain;
 import de.joergdev.mosy.shared.Utils;
 
@@ -299,6 +300,15 @@ public abstract class AbstractServiceClientTest
                              String returnValue, MockProfile apiMockProfile, boolean common,
                              Integer httpReturnCode, Map<String, String> pathParams)
   {
+    addMockData(apiMethodMd, title, active, requestAction, returnValue, apiMockProfile, common,
+        httpReturnCode, pathParams, null);
+  }
+
+  protected void addMockData(InterfaceMethod apiMethodMd, String title, boolean active, String requestAction,
+                             String returnValue, MockProfile apiMockProfile, boolean common,
+                             Integer httpReturnCode, Map<String, String> pathParams,
+                             Map<String, String> urlArguments)
+  {
     MockData md1 = new MockData();
     md1.setActive(active);
     md1.setTitle(title);
@@ -311,6 +321,12 @@ public abstract class AbstractServiceClientTest
     {
       md1.getPathParams().addAll(pathParams.entrySet().stream()
           .map(e -> new PathParam(e.getKey(), e.getValue())).collect(Collectors.toList()));
+    }
+
+    if (urlArguments != null)
+    {
+      md1.getUrlArguments().addAll(urlArguments.entrySet().stream()
+          .map(e -> new UrlArgument(e.getKey(), e.getValue())).collect(Collectors.toList()));
     }
 
     if (apiMockProfile != null)
@@ -355,14 +371,22 @@ public abstract class AbstractServiceClientTest
   }
 
   protected void checkRecord(List<Record> records, int pos, Map<String, String> expectedPathParams,
-                             String expectedRequest, Integer expectedHttpReturnCode, String expectedResponse)
+                             Map<String, String> expectedUrlArguments, String expectedRequest,
+                             Integer expectedHttpReturnCode, String expectedResponse)
   {
     Record rec = mosyClient.loadRecord(records.get(pos).getRecordId()).getRecord();
 
+    // pathParams
     expectedPathParams = Utils.nvlMap(expectedPathParams);
     assertEquals(expectedPathParams.size(), rec.getPathParams().size());
     assertTrue(Utils.mapContainsMap(expectedPathParams,
         rec.getPathParams().stream().collect(Collectors.toMap(pp -> pp.getKey(), pp -> pp.getValue()))));
+
+    // urlArguments
+    expectedUrlArguments = Utils.nvlMap(expectedUrlArguments);
+    assertEquals(expectedUrlArguments.size(), rec.getUrlArguments().size());
+    assertTrue(Utils.mapContainsMap(expectedUrlArguments,
+        rec.getUrlArguments().stream().collect(Collectors.toMap(ua -> ua.getKey(), ua -> ua.getValue()))));
 
     expectedRequest = Utils.nvl(expectedRequest).trim();
     String request = Utils.nvl(rec.getRequestData()).trim();

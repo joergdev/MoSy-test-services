@@ -124,6 +124,13 @@ public abstract class AbstractRestServiceClientTest extends AbstractServiceClien
     invokeWsCall(method, (TestableModel) null, assertedHttpStatus, assertion);
   }
 
+  protected void invokeWsCall(InterfaceMethod method, Integer assertedHttpStatus, String assertion,
+                              Map<String, Object> urlArguments)
+    throws Exception
+  {
+    invokeWsCall(method, null, urlArguments, null, null, null, assertedHttpStatus, assertion);
+  }
+
   protected void invokeWsCall(InterfaceMethod method, Integer assertedHttpStatus, String mockProfileName,
                               String assertion)
     throws Exception
@@ -171,6 +178,15 @@ public abstract class AbstractRestServiceClientTest extends AbstractServiceClien
                               String assertion)
     throws Exception
   {
+    invokeWsCall(method, pathParams, null, model, mockProfileName, recordSessionID, assertedHttpStatus,
+        assertion);
+  }
+
+  protected void invokeWsCall(InterfaceMethod method, Map<String, String> pathParams,
+                              Map<String, Object> urlArguments, TestableModel model, String mockProfileName,
+                              Integer recordSessionID, Integer assertedHttpStatus, String assertion)
+    throws Exception
+  {
     String urlPath = method.getServicePath();
 
     if (pathParams != null)
@@ -182,7 +198,7 @@ public abstract class AbstractRestServiceClientTest extends AbstractServiceClien
     }
 
     Response result = RestServiceClientPortSingleton.getInstance().invoke(method.getHttpMethod(), urlPath,
-        model, mockProfileName, recordSessionID, null);
+        model, mockProfileName, recordSessionID, urlArguments);
 
     assertEquals(assertedHttpStatus, Integer.valueOf(result.getStatus()));
 
