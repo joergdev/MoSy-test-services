@@ -198,13 +198,14 @@ public class MockByMockdataTest extends AbstractRestServiceClientTest
     addMockData(apiMethod, "MD1_get", true, null, MOCK_RESULT_GET_CARS, 200);
 
     addMockData(apiMethod, "MD1_get_urlArg_stageDev", true, null, MOCK_RESULT_GET_CARS_DEV, null, true, 200,
-        null, Utils.mapOfEntries(Utils.mapEntry("stage", "dev")));
+        null, Utils.mapOfEntries(Utils.mapEntry("stage", "dev")), null);
 
     addMockData(apiMethod, "MD1_get_urlArg_stageTest", true, null, MOCK_RESULT_GET_CARS_TEST, null, true, 200,
-        null, Utils.mapOfEntries(Utils.mapEntry("stage", "test")));
+        null, Utils.mapOfEntries(Utils.mapEntry("stage", "test")), null);
 
     addMockData(apiMethod, "MD1_get_urlArg_stageTest_age5", true, null, MOCK_RESULT_GET_CARS_TEST_AGE5, null,
-        true, 200, null, Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")));
+        true, 200, null, Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")),
+        null);
 
     MockProfile mp1 = createMockProfile("MP1", false);
     addMockData(apiMethod, "MD1_get_404", true, null, null, mp1, false, 404);

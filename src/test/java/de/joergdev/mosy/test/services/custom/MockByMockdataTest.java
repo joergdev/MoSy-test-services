@@ -16,7 +16,10 @@ public class MockByMockdataTest extends AbstractCustomServiceClientTest
     invokeCustomCall("3", "m_others_m");
 
     // Mockdata active matching
-    invokeCustomCall("4", "m_four_m");
+    invokeCustomCall("4", "m_four_m", null, null, null, 300L);
+
+    // Mockdata active matching with delay 1.000ms
+    invokeCustomCall("4_delay", "m_four_m_delay", null, null, 1000L, 1300L);
   }
 
   @Override
@@ -49,6 +52,8 @@ public class MockByMockdataTest extends AbstractCustomServiceClientTest
     addMockData("MD2", false, "2", "m_two_m");
     addMockData("MD3", false, "3", "m_three_m");
     addMockData("MD4", true, "4", "m_four_m");
+    addMockData(apiMethod, "MD4_delay", true, "4_delay", "m_four_m_delay", null, false, null, null, null,
+        1000L);
     addMockData("MD-Others", true, null, "m_others_m");
   }
 }

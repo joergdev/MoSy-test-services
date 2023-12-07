@@ -272,7 +272,7 @@ public abstract class AbstractServiceClientTest
   protected void addMockData(String title, boolean active, String requestAction, String returnValue,
                              MockProfile apiMockProfile, boolean common)
   {
-    addMockData(title, active, requestAction, returnValue, apiMockProfile, common);
+    addMockData(title, active, requestAction, returnValue, apiMockProfile, common,null);
   }
 
   protected void addMockData(String title, boolean active, String requestAction, String returnValue,
@@ -301,19 +301,20 @@ public abstract class AbstractServiceClientTest
                              Integer httpReturnCode, Map<String, String> pathParams)
   {
     addMockData(apiMethodMd, title, active, requestAction, returnValue, apiMockProfile, common,
-        httpReturnCode, pathParams, null);
+        httpReturnCode, pathParams, null, null);
   }
 
   protected void addMockData(InterfaceMethod apiMethodMd, String title, boolean active, String requestAction,
                              String returnValue, MockProfile apiMockProfile, boolean common,
                              Integer httpReturnCode, Map<String, String> pathParams,
-                             Map<String, String> urlArguments)
+                             Map<String, String> urlArguments, Long delay)
   {
     MockData md1 = new MockData();
     md1.setActive(active);
     md1.setTitle(title);
     md1.setRequest(requestAction);
     md1.setResponse(returnValue);
+    md1.setDelay(delay);
     md1.setCommon(common);
     md1.setHttpReturnCode(httpReturnCode);
 
