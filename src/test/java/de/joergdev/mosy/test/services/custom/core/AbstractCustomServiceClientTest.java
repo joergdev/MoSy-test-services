@@ -2,6 +2,7 @@ package de.joergdev.mosy.test.services.custom.core;
 
 import static org.junit.Assert.*;
 import java.rmi.RemoteException;
+import java.util.Map;
 import de.joergdev.mosy.api.model.Interface;
 import de.joergdev.mosy.api.model.InterfaceMethod;
 import de.joergdev.mosy.api.model.InterfaceType;
@@ -51,11 +52,11 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
   protected void invokeCustomCall(String request, String assertion)
     throws Exception
   {
-    invokeCustomCall(request, assertion, null, null);
+    invokeCustomCall(request, assertion, null, null, null, null);
   }
 
   protected void invokeCustomCall(String request, String assertion, String mockProfileName,
-                                  Integer recordSessionID)
+                                  Integer recordSessionID, Long minDelay, Long maxDelay)
     throws Exception
   {
     request = "<action>" + request + "</action>";
@@ -65,7 +66,11 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
     req.setInterfaceMethod("getRequestedData");
     req.setRequest(request);
 
+    long timeStart = System.currentTimeMillis();
+
     CustomRequestResponse response = mosyClient.customRequest(req, mockProfileName, recordSessionID);
+
+    checkDelay(timeStart, minDelay, maxDelay);
 
     String result = null;
 
@@ -94,14 +99,33 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
     assertEquals("<return>" + assertion + "</return>", result);
   }
 
-  protected void addMockData(String title, boolean active, String requestAction, String returnValue,
-                             MockProfile apiMockProfile)
+  private void checkDelay(long timeStart, Long minDelay, Long maxDelay)
   {
-    addMockData(title, active, requestAction, returnValue, apiMockProfile, false);
+    long diff = System.currentTimeMillis() - timeStart;
+
+    if (minDelay != null && diff < minDelay)
+    {
+      fail("diff<minDelay; diff: " + diff + "; minDelay" + minDelay);
+    }
+
+    if (maxDelay != null && diff > maxDelay)
+    {
+      fail("diff > maxDelay; diff: " + diff + "; maxDelay" + maxDelay);
+    }
   }
 
   protected void addMockData(String title, boolean active, String requestAction, String returnValue,
-                             MockProfile apiMockProfile, boolean common)
+                             MockProfile apiMockProfile)
+  {
+    addMockData(null, title, active, requestAction, returnValue, apiMockProfile, false, null, null, null,
+        null);
+  }
+
+  @Override
+  protected void addMockData(InterfaceMethod apiMethodMd, String title, boolean active, String requestAction,
+                             String returnValue, MockProfile apiMockProfile, boolean common,
+                             Integer httpReturnCode, Map<String, String> pathParams,
+                             Map<String, String> urlArguments, Long delay)
   {
     if (requestAction != null)
     {
@@ -110,7 +134,8 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
 
     returnValue = "<return>" + returnValue + "</return>";
 
-    super.addMockData(title, active, requestAction, returnValue, apiMockProfile, common);
+    super.addMockData(apiMethodMd, title, active, requestAction, returnValue, apiMockProfile, common,
+        httpReturnCode, pathParams, urlArguments, delay);
   }
 
   protected void addRecordConfig(String title, boolean enabled, String requestAction)

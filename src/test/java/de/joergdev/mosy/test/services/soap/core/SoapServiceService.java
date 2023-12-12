@@ -10,7 +10,7 @@ import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceFeature;
 
-@WebServiceClient(name = "SoapService", targetNamespace = "http://services.test.mosy.joergdev.github.com/")
+@WebServiceClient(name = "SoapService", targetNamespace = "http://services.test.mosy.joergdev.de/")
 @HandlerChain(file = "HandlerChain.xml")
 public class SoapServiceService extends Service
 {
@@ -32,20 +32,20 @@ public class SoapServiceService extends Service
    */
   SoapServiceService(String url)
   {
-    super(getURL(url), new QName("http://services.test.mosy.joergdev.github.com/", "SoapService"));
+    super(getURL(url), new QName("http://services.test.mosy.joergdev.de/", "SoapService"));
   }
 
   @WebEndpoint(name = "SoapServicePort")
   SoapService getSoapServicePort()
   {
-    return getPort(new QName("http://services.test.mosy.joergdev.github.com/", "SoapServicePort"),
+    return getPort(new QName("http://services.test.mosy.joergdev.de/", "SoapServicePort"),
         SoapService.class);
   }
 
   @WebEndpoint(name = "SoapServicePort")
   SoapService getSoapServicePort(WebServiceFeature... features)
   {
-    return getPort(new QName("http://services.test.mosy.joergdev.github.com/", "SoapServicePort"),
+    return getPort(new QName("http://services.test.mosy.joergdev.de/", "SoapServicePort"),
         SoapService.class, features);
   }
 }

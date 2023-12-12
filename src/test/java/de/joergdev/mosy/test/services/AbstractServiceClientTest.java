@@ -1,8 +1,10 @@
 package de.joergdev.mosy.test.services;
 
 import static org.junit.Assert.*;
+import java.net.ConnectException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,9 +14,13 @@ import de.joergdev.mosy.api.model.Interface;
 import de.joergdev.mosy.api.model.InterfaceMethod;
 import de.joergdev.mosy.api.model.MockData;
 import de.joergdev.mosy.api.model.MockProfile;
+import de.joergdev.mosy.api.model.PathParam;
 import de.joergdev.mosy.api.model.Record;
 import de.joergdev.mosy.api.model.RecordConfig;
 import de.joergdev.mosy.api.model.RecordSession;
+import de.joergdev.mosy.api.model.UrlArgument;
+import de.joergdev.mosy.backend.standalone.ApplicationMain;
+import de.joergdev.mosy.shared.Utils;
 
 public abstract class AbstractServiceClientTest
 {
@@ -29,7 +35,25 @@ public abstract class AbstractServiceClientTest
   {
     // create MosyApiClient and login
     mosyClient = new MosyApiClient();
-    mosyClient.systemLogin("m0sy".hashCode());
+
+    try
+    {
+      mosyClient.systemLogin("m0sy".hashCode());
+    }
+    catch (RuntimeException ex)
+    {
+      // Start Backend and retry Login
+      if (ex.getCause() instanceof ConnectException)
+      {
+        ApplicationMain.main(new String[0]);
+
+        mosyClient.systemLogin("m0sy".hashCode());
+      }
+      else
+      {
+        throw ex;
+      }
+    }
 
     // Set back default settings
     mosyClient.systemBoot();
@@ -42,9 +66,9 @@ public abstract class AbstractServiceClientTest
     assureInterfaceExists();
 
     setPropertiesInterfaceMethodForTest();
-    assureInterfaceMethodExists();
+    apiMethod = assureInterfaceMethodExists(apiMethod);
 
-    //    clearRecords();
+    clearRecords();
 
     _before();
   }
@@ -115,9 +139,8 @@ public abstract class AbstractServiceClientTest
     mosyClient.globalConfigSave(apiBaseData);
   }
 
-  private void assureInterfaceMethodExists()
+  protected InterfaceMethod assureInterfaceMethodExists(InterfaceMethod target)
   {
-    InterfaceMethod target = apiMethod;
     InterfaceMethod apiMethod = apiInterface.getMethodByName(target.getName());
 
     if (apiMethod == null)
@@ -149,6 +172,7 @@ public abstract class AbstractServiceClientTest
     }
 
     apiMethod.setServicePath(target.getServicePath());
+    apiMethod.setHttpMethod(target.getHttpMethod());
     apiMethod.setRoutingOnNoMockData(target.getRoutingOnNoMockData());
     apiMethod.setMockActive(target.getMockActive());
     apiMethod.setMockActiveOnStartup(target.getMockActiveOnStartup());
@@ -159,8 +183,6 @@ public abstract class AbstractServiceClientTest
 
     apiMethod
         .setInterfaceMethodId(apiInterfaceSaved.getMethodByName(target.getName()).getInterfaceMethodId());
-
-    this.apiMethod = apiMethod;
 
     // save mockData
     for (MockData targetMockData : target.getMockData())
@@ -185,6 +207,8 @@ public abstract class AbstractServiceClientTest
       targetRC.setRecordConfigId(rcID);
       apiMethod.getRecordConfigs().add(targetRC);
     }
+
+    return apiMethod;
   }
 
   private void assureInterfaceExists()
@@ -227,28 +251,91 @@ public abstract class AbstractServiceClientTest
     addMockData(title, active, requestAction, returnValue, false);
   }
 
+  protected void addMockData(InterfaceMethod apiMethodMd, String title, boolean active, String requestAction,
+                             String returnValue, Integer httpReturnCode)
+  {
+    addMockData(apiMethodMd, title, active, requestAction, returnValue, false, httpReturnCode);
+  }
+
   protected void addMockData(String title, boolean active, String requestAction, String returnValue,
                              boolean common)
   {
     addMockData(title, active, requestAction, returnValue, null, common);
   }
 
+  protected void addMockData(InterfaceMethod apiMethodMd, String title, boolean active, String requestAction,
+                             String returnValue, boolean common, Integer httpReturnCode)
+  {
+    addMockData(apiMethodMd, title, active, requestAction, returnValue, null, common, httpReturnCode);
+  }
+
   protected void addMockData(String title, boolean active, String requestAction, String returnValue,
                              MockProfile apiMockProfile, boolean common)
+  {
+    addMockData(title, active, requestAction, returnValue, apiMockProfile, common,null);
+  }
+
+  protected void addMockData(String title, boolean active, String requestAction, String returnValue,
+                             MockProfile apiMockProfile, boolean common, Integer httpReturnCode)
+  {
+    addMockData(apiMethod, title, active, requestAction, returnValue, apiMockProfile, common, httpReturnCode);
+  }
+
+  protected void addMockData(InterfaceMethod apiMethodMd, String title, boolean active, String requestAction,
+                             String returnValue, Integer httpReturnCode, Map<String, String> pathParams)
+  {
+    addMockData(apiMethodMd, title, active, requestAction, returnValue, null, false, httpReturnCode,
+        pathParams);
+  }
+
+  protected void addMockData(InterfaceMethod apiMethodMd, String title, boolean active, String requestAction,
+                             String returnValue, MockProfile apiMockProfile, boolean common,
+                             Integer httpReturnCode)
+  {
+    addMockData(apiMethodMd, title, active, requestAction, returnValue, apiMockProfile, common,
+        httpReturnCode, null);
+  }
+
+  protected void addMockData(InterfaceMethod apiMethodMd, String title, boolean active, String requestAction,
+                             String returnValue, MockProfile apiMockProfile, boolean common,
+                             Integer httpReturnCode, Map<String, String> pathParams)
+  {
+    addMockData(apiMethodMd, title, active, requestAction, returnValue, apiMockProfile, common,
+        httpReturnCode, pathParams, null, null);
+  }
+
+  protected void addMockData(InterfaceMethod apiMethodMd, String title, boolean active, String requestAction,
+                             String returnValue, MockProfile apiMockProfile, boolean common,
+                             Integer httpReturnCode, Map<String, String> pathParams,
+                             Map<String, String> urlArguments, Long delay)
   {
     MockData md1 = new MockData();
     md1.setActive(active);
     md1.setTitle(title);
     md1.setRequest(requestAction);
     md1.setResponse(returnValue);
+    md1.setDelay(delay);
     md1.setCommon(common);
+    md1.setHttpReturnCode(httpReturnCode);
+
+    if (pathParams != null)
+    {
+      md1.getPathParams().addAll(pathParams.entrySet().stream()
+          .map(e -> new PathParam(e.getKey(), e.getValue())).collect(Collectors.toList()));
+    }
+
+    if (urlArguments != null)
+    {
+      md1.getUrlArguments().addAll(urlArguments.entrySet().stream()
+          .map(e -> new UrlArgument(e.getKey(), e.getValue())).collect(Collectors.toList()));
+    }
 
     if (apiMockProfile != null)
     {
       md1.getMockProfiles().add(apiMockProfile);
     }
 
-    apiMethod.getMockData().add(md1);
+    apiMethodMd.getMockData().add(md1);
   }
 
   protected void addRecordConfig(String title, boolean enabled, String requestAction)
@@ -275,16 +362,45 @@ public abstract class AbstractServiceClientTest
     List<Record> records = mosyClient.loadRecords(null, null, recordSessionID).getRecords();
 
     List<Record> recordsInRange = records.stream()
-        .filter(r -> r.getInterfaceMethod().getInterfaceMethodId().equals(apiMethod.getInterfaceMethodId())
-                     && r.getCreatedAsLdt().compareTo(ldtStart) >= 0
-                     && r.getCreatedAsLdt().compareTo(ldtEnd) <= 0)
+        .filter(
+            r -> r.getCreatedAsLdt().compareTo(ldtStart) >= 0 && r.getCreatedAsLdt().compareTo(ldtEnd) <= 0)
         .collect(Collectors.toList());
 
-    long countRecords = recordsInRange.size();
-
-    assertEquals(expectedCountRecords, countRecords);
+    assertEquals(expectedCountRecords, recordsInRange.size());
 
     return recordsInRange;
+  }
+
+  protected void checkRecord(List<Record> records, int pos, Map<String, String> expectedPathParams,
+                             Map<String, String> expectedUrlArguments, String expectedRequest,
+                             Integer expectedHttpReturnCode, String expectedResponse)
+  {
+    Record rec = mosyClient.loadRecord(records.get(pos).getRecordId()).getRecord();
+
+    // pathParams
+    expectedPathParams = Utils.nvlMap(expectedPathParams);
+    assertEquals(expectedPathParams.size(), rec.getPathParams().size());
+    assertTrue(Utils.mapContainsMap(expectedPathParams,
+        rec.getPathParams().stream().collect(Collectors.toMap(pp -> pp.getKey(), pp -> pp.getValue()))));
+
+    // urlArguments
+    expectedUrlArguments = Utils.nvlMap(expectedUrlArguments);
+    assertEquals(expectedUrlArguments.size(), rec.getUrlArguments().size());
+    assertTrue(Utils.mapContainsMap(expectedUrlArguments,
+        rec.getUrlArguments().stream().collect(Collectors.toMap(ua -> ua.getKey(), ua -> ua.getValue()))));
+
+    expectedRequest = Utils.nvl(expectedRequest).trim();
+    String request = Utils.nvl(rec.getRequestData()).trim();
+    assertEquals(expectedRequest, request);
+
+    if (expectedHttpReturnCode != null)
+    {
+      assertEquals(expectedHttpReturnCode, rec.getHttpReturnCode());
+    }
+
+    expectedResponse = Utils.nvl(expectedResponse).trim();
+    String response = Utils.nvl(rec.getResponse()).trim();
+    assertEquals(expectedResponse, response);
   }
 
   protected MockProfile createMockProfile(String name, boolean useCommonMocks)

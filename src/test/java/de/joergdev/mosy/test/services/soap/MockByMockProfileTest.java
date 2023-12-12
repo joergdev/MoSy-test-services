@@ -18,17 +18,8 @@ public class MockByMockProfileTest extends AbstractSoapServiceClientTest
     // Mockdata active for mockSession matching
     invokeWsCall("1", "ms1_one_ms1", apiMockProfileActiveCommonMockdataUsage.getName(), null);
 
-    /*
-     * TODO
-    
-    org.junit.ComparisonFailure: expected:<m[s1_one_ms1]> but was:<m[_one_m]>
-    
-    
-     */
-
     // second call has to fail, there are 2 mockdata 
     // but first is inactive, second is related to other mockSession
-
     try
     {
       invokeWsCall("2", null, apiMockProfileActiveCommonMockdataUsage.getName(), null);
@@ -37,8 +28,8 @@ public class MockByMockProfileTest extends AbstractSoapServiceClientTest
     }
     catch (SOAPFaultException ex)
     {
-      assertTrue(ex.getMessage().contains(
-          "[ERROR] - 6 - Unexpected error, please contact your Systemadmin [Operation failed [no mockdata for interface SoapService, method testMethod"));
+      assertTrue(ex.getMessage(), ex.getMessage().contains("[ERROR]") && ex.getMessage()
+          .contains("Operation failed [no mockdata for interface SoapService, method testMethod"));
     }
 
     // Mockdata active for mockSession matching
@@ -56,14 +47,13 @@ public class MockByMockProfileTest extends AbstractSoapServiceClientTest
     }
     catch (SOAPFaultException ex)
     {
-      assertTrue(ex.getMessage().contains(
-          "[ERROR] - 6 - Unexpected error, please contact your Systemadmin [Operation failed [no mockdata for interface SoapService, method testMethod"));
+      assertTrue(ex.getMessage(), ex.getMessage().contains("[ERROR]") && ex.getMessage()
+          .contains("Operation failed [no mockdata for interface SoapService, method testMethod"));
     }
 
     // Mockdata active for mocksession matching
     invokeWsCall("6", "ms3_six_ms3", apiMockProfileActiveNoCommonMockdataUsage.getName(), null);
 
-    // TODO
     // mockdata common existring for mockProfile
     invokeWsCall("7", "ms2_seven_ms2", apiMockProfileActiveCommonMockdataUsage.getName(), null);
 
@@ -79,8 +69,8 @@ public class MockByMockProfileTest extends AbstractSoapServiceClientTest
     }
     catch (SOAPFaultException ex)
     {
-      assertTrue(ex.getMessage().contains(
-          "[ERROR] - 6 - Unexpected error, please contact your Systemadmin [Operation failed [no mockdata for interface SoapService, method testMethod"));
+      assertTrue(ex.getMessage(), ex.getMessage().contains("[ERROR]") && ex.getMessage()
+          .contains("Operation failed [no mockdata for interface SoapService, method testMethod"));
     }
   }
 

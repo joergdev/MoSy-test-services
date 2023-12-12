@@ -75,13 +75,13 @@ public abstract class AbstractSoapServiceClientTest extends AbstractServiceClien
     returnValue = "<?xml version=\"1.0\" ?>"
                   + "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">" //
                   + "<S:Body>" //
-                  + "<ns2:testMethodResponse xmlns:ns2=\"http://services.test.mosy.joergdev.github.com/\">"
+                  + "<ns2:testMethodResponse xmlns:ns2=\"http://services.test.mosy.joergdev.de/\">"
                   + "<return>" + returnValue + "</return>" //
                   + "</ns2:testMethodResponse>" //
                   + "</S:Body>" //
                   + "</S:Envelope>";
 
-    super.addMockData(title, active, requestAction, returnValue, apiMockProfile, common);
+    super.addMockData(title, active, requestAction, returnValue, apiMockProfile, common, null);
   }
 
   protected void addRecordConfig(String title, boolean enabled, String requestAction)
