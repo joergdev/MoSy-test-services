@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.joergdev</groupId>
 	<artifactId>mosy-test-services</artifactId>
-	<version>3.0.0</version>
+	<version>3.1.0</version>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -45,17 +45,17 @@
 		<dependency>
 			<groupId>de.joergdev</groupId>
 			<artifactId>mosy-backend-standalone</artifactId>
-			<version>3.0.0</version>
+			<version>3.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>de.joergdev</groupId>
 			<artifactId>mosy-api</artifactId>
-			<version>3.0.0</version>
+			<version>3.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>de.joergdev</groupId>
 			<artifactId>mosy-api-client</artifactId>
-			<version>3.0.0</version>
+			<version>3.1.0</version>
 		</dependency>
 
 		<dependency>
