@@ -32,6 +32,7 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
     }
   }
 
+  @Override
   protected Interface getDefaultInterface()
   {
     Interface apiInterface = super.getDefaultInterface();
@@ -41,6 +42,7 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
     return apiInterface;
   }
 
+  @Override
   protected InterfaceMethod getDefaultInterfaceMethod()
   {
     InterfaceMethod apiMethod = super.getDefaultInterfaceMethod();
@@ -55,8 +57,7 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
     invokeCustomCall(request, assertion, null, null, null, null);
   }
 
-  protected void invokeCustomCall(String request, String assertion, String mockProfileName,
-                                  Integer recordSessionID, Long minDelay, Long maxDelay)
+  protected void invokeCustomCall(String request, String assertion, String mockProfileName, Integer recordSessionID, Long minDelay, Long maxDelay)
     throws Exception
   {
     request = "<action>" + request + "</action>";
@@ -114,18 +115,14 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
     }
   }
 
-  protected void addMockData(String title, boolean active, String requestAction, String returnValue,
-                             MockProfile apiMockProfile)
+  protected void addMockData(String title, boolean active, String requestAction, String returnValue, MockProfile apiMockProfile)
   {
-    addMockData(null, title, active, requestAction, returnValue, apiMockProfile, false, null, null, null,
-        null);
+    addMockData(apiMethod, title, active, requestAction, returnValue, apiMockProfile, false, null, null, null, null);
   }
 
   @Override
-  protected void addMockData(InterfaceMethod apiMethodMd, String title, boolean active, String requestAction,
-                             String returnValue, MockProfile apiMockProfile, boolean common,
-                             Integer httpReturnCode, Map<String, String> pathParams,
-                             Map<String, String> urlArguments, Long delay)
+  protected void addMockData(InterfaceMethod apiMethodMd, String title, boolean active, String requestAction, String returnValue, MockProfile apiMockProfile,
+                             boolean common, Integer httpReturnCode, Map<String, String> pathParams, Map<String, String> urlArguments, Long delay)
   {
     if (requestAction != null)
     {
@@ -134,10 +131,10 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
 
     returnValue = "<return>" + returnValue + "</return>";
 
-    super.addMockData(apiMethodMd, title, active, requestAction, returnValue, apiMockProfile, common,
-        httpReturnCode, pathParams, urlArguments, delay);
+    super.addMockData(apiMethodMd, title, active, requestAction, returnValue, apiMockProfile, common, httpReturnCode, pathParams, urlArguments, delay);
   }
 
+  @Override
   protected void addRecordConfig(String title, boolean enabled, String requestAction)
   {
     requestAction = "<action>" + requestAction + "</action>";
