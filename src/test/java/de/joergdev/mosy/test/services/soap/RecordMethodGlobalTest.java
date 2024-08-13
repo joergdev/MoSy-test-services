@@ -22,28 +22,28 @@ public class RecordMethodGlobalTest extends AbstractSoapServiceClientTest
   @Override
   protected void setPropertiesBaseData()
   {
-    apiBaseData.setMockActive(true);
-    apiBaseData.setMockActiveOnStartup(true);
-    apiBaseData.setRecord(null);
-    apiBaseData.setRoutingOnNoMockData(true);
+    getApiBaseData().setMockActive(true);
+    getApiBaseData().setMockActiveOnStartup(true);
+    getApiBaseData().setRecord(null);
+    getApiBaseData().setRoutingOnNoMockData(true);
   }
 
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockActive(true);
-    apiInterface.setMockActiveOnStartup(true);
-    apiInterface.setRecord(null);
-    apiInterface.setRoutingOnNoMockData(true);
+    getApiInterface().setMockActive(true);
+    getApiInterface().setMockActiveOnStartup(true);
+    getApiInterface().setRecord(null);
+    getApiInterface().setRoutingOnNoMockData(true);
   }
 
   @Override
   protected void setPropertiesInterfaceMethodForTest()
   {
-    apiMethod.setMockActive(true);
-    apiMethod.setMockActiveOnStartup(true);
-    apiMethod.setRecord(true);
-    apiMethod.setRoutingOnNoMockData(true);
+    getApiInterfaceMethod().setMockActive(true);
+    getApiInterfaceMethod().setMockActiveOnStartup(true);
+    getApiInterfaceMethod().setRecord(true);
+    getApiInterfaceMethod().setRoutingOnNoMockData(true);
   }
 
 }

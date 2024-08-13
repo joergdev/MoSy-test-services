@@ -1,7 +1,6 @@
 package de.joergdev.mosy.test.services.soap.core;
 
 import static org.junit.Assert.*;
-import de.joergdev.mosy.api.client.Resources;
 import de.joergdev.mosy.api.model.Interface;
 import de.joergdev.mosy.api.model.InterfaceMethod;
 import de.joergdev.mosy.api.model.InterfaceType;
@@ -17,11 +16,32 @@ public abstract class AbstractSoapServiceClientTest extends AbstractServiceClien
     // Start the Service
     SoapService.main(null);
 
-    // set endpoint to mosy
-    SoapServiceClientPortSingleton.getInstance()
-        .setUrl(Resources.getProperty("api_endpoint") + "/mock-services/soap/SoapService");
+    if (!isMulitTanencyEnabled())
+    {
+      setSoapServiceEndpointToMosyMockService();
+    }
   }
 
+  @Override
+  protected void doLoginAndCreateBaseData()
+  {
+    super.doLoginAndCreateBaseData();
+
+    // Relevant for multi-tenancy, in this case we cannot set the url on begin because it creates an request for the ?wsdl endoint.
+    // This requires an tenantId in the http header.
+    // So we have to wait for the creation and initialisation of the first tenant.
+    if (!SoapServiceClientPortSingleton.getInstance().isServiceInitialised())
+    {
+      setSoapServiceEndpointToMosyMockService();
+    }
+  }
+
+  private void setSoapServiceEndpointToMosyMockService()
+  {
+    SoapServiceClientPortSingleton.getInstance().initService(null);
+  }
+
+  @Override
   protected Interface getDefaultInterface()
   {
     Interface apiInterface = super.getDefaultInterface();
@@ -33,6 +53,7 @@ public abstract class AbstractSoapServiceClientTest extends AbstractServiceClien
     return apiInterface;
   }
 
+  @Override
   protected InterfaceMethod getDefaultInterfaceMethod()
   {
     InterfaceMethod apiMethod = super.getDefaultInterfaceMethod();
@@ -48,35 +69,30 @@ public abstract class AbstractSoapServiceClientTest extends AbstractServiceClien
     invokeWsCall(request, assertion, null, null);
   }
 
-  protected void invokeWsCall(String request, String assertion, String mockProfileName,
-                              Integer recordSessionID)
+  protected void invokeWsCall(String request, String assertion, String mockProfileName, Integer recordSessionID)
     throws Exception
   {
-    String result = SoapServiceClientPortSingleton.getInstance().invoke(request, mockProfileName,
-        recordSessionID);
+    String result = SoapServiceClientPortSingleton.getInstance().invoke(request, activeTenantId, mockProfileName, recordSessionID);
 
     assertEquals(assertion, result);
   }
 
-  protected void addMockData(String title, boolean active, String requestAction, String returnValue,
-                             MockProfile apiMockProfile)
+  protected void addMockData(String title, boolean active, String requestAction, String returnValue, MockProfile apiMockProfile)
   {
     addMockData(title, active, requestAction, returnValue, apiMockProfile, false);
   }
 
-  protected void addMockData(String title, boolean active, String requestAction, String returnValue,
-                             MockProfile apiMockProfile, boolean common)
+  @Override
+  protected void addMockData(String title, boolean active, String requestAction, String returnValue, MockProfile apiMockProfile, boolean common)
   {
     if (requestAction != null)
     {
       requestAction = "<action>" + requestAction + "</action>";
     }
 
-    returnValue = "<?xml version=\"1.0\" ?>"
-                  + "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">" //
+    returnValue = "<?xml version=\"1.0\" ?>" + "<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\">" //
                   + "<S:Body>" //
-                  + "<ns2:testMethodResponse xmlns:ns2=\"http://services.test.mosy.joergdev.de/\">"
-                  + "<return>" + returnValue + "</return>" //
+                  + "<ns2:testMethodResponse xmlns:ns2=\"http://services.test.mosy.joergdev.de/\">" + "<return>" + returnValue + "</return>" //
                   + "</ns2:testMethodResponse>" //
                   + "</S:Body>" //
                   + "</S:Envelope>";
@@ -84,6 +100,7 @@ public abstract class AbstractSoapServiceClientTest extends AbstractServiceClien
     super.addMockData(title, active, requestAction, returnValue, apiMockProfile, common, null);
   }
 
+  @Override
   protected void addRecordConfig(String title, boolean enabled, String requestAction)
   {
     requestAction = "<action>" + requestAction + "</action>";

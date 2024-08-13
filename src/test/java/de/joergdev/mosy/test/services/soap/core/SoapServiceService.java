@@ -9,6 +9,7 @@ import javax.xml.ws.Service;
 import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceFeature;
+import de.joergdev.mosy.shared.Utils;
 
 @WebServiceClient(name = "SoapService", targetNamespace = "http://services.test.mosy.joergdev.de/")
 @HandlerChain(file = "HandlerChain.xml")
@@ -16,18 +17,30 @@ public class SoapServiceService extends Service
 {
   private static URL getURL(String url)
   {
-    try
+    // no url => use local wsdl
+    // used for multi-tenancy to avoid ?wsdl request without tenantId in http header (this would throw an error)
+    if (Utils.isEmpty(url))
     {
-      return new URL(url);
+      URL wsdlLocation = SoapServiceService.class.getResource("/SoapService.wsdl");
+
+      return wsdlLocation;
     }
-    catch (MalformedURLException e)
+    else
     {
-      throw new IllegalStateException(e);
+      try
+      {
+        return new URL(url);
+      }
+      catch (MalformedURLException ex)
+      {
+        throw new IllegalStateException(ex);
+      }
     }
   }
 
   /**
    * constructor
+   * 
    * @param url 
    */
   SoapServiceService(String url)
@@ -38,14 +51,12 @@ public class SoapServiceService extends Service
   @WebEndpoint(name = "SoapServicePort")
   SoapService getSoapServicePort()
   {
-    return getPort(new QName("http://services.test.mosy.joergdev.de/", "SoapServicePort"),
-        SoapService.class);
+    return getPort(new QName("http://services.test.mosy.joergdev.de/", "SoapServicePort"), SoapService.class);
   }
 
   @WebEndpoint(name = "SoapServicePort")
   SoapService getSoapServicePort(WebServiceFeature... features)
   {
-    return getPort(new QName("http://services.test.mosy.joergdev.de/", "SoapServicePort"),
-        SoapService.class, features);
+    return getPort(new QName("http://services.test.mosy.joergdev.de/", "SoapServicePort"), SoapService.class, features);
   }
 }

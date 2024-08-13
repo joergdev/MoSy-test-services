@@ -25,24 +25,24 @@ public class RouteAndRecordInterfaceGlobalTest extends AbstractCustomServiceClie
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockActive(null);
-    apiInterface.setMockActiveOnStartup(null);
-    apiInterface.setRecord(true);
+    getApiInterface().setMockActive(null);
+    getApiInterface().setMockActiveOnStartup(null);
+    getApiInterface().setRecord(true);
   }
 
   @Override
   protected void setPropertiesInterfaceMethodForTest()
   {
-    apiMethod.setMockActive(false);
-    apiMethod.setMockActiveOnStartup(false);
-    apiMethod.setRecord(false);
+    getApiInterfaceMethod().setMockActive(false);
+    getApiInterfaceMethod().setMockActiveOnStartup(false);
+    getApiInterfaceMethod().setRecord(false);
   }
 
   @Override
   protected void setPropertiesBaseData()
   {
-    apiBaseData.setMockActive(null);
-    apiBaseData.setMockActiveOnStartup(null);
-    apiBaseData.setRecord(null);
+    getApiBaseData().setMockActive(null);
+    getApiBaseData().setMockActiveOnStartup(null);
+    getApiBaseData().setRecord(null);
   }
 }

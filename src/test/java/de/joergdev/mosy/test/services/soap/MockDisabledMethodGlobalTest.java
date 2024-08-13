@@ -17,28 +17,28 @@ public class MockDisabledMethodGlobalTest extends AbstractSoapServiceClientTest
   @Override
   protected void setPropertiesBaseData()
   {
-    apiBaseData.setMockActive(null);
-    apiBaseData.setMockActiveOnStartup(null);
-    apiBaseData.setRecord(false);
-    apiBaseData.setRoutingOnNoMockData(true);
+    getApiBaseData().setMockActive(null);
+    getApiBaseData().setMockActiveOnStartup(null);
+    getApiBaseData().setRecord(false);
+    getApiBaseData().setRoutingOnNoMockData(true);
   }
 
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockActive(null);
-    apiInterface.setMockActiveOnStartup(null);
-    apiInterface.setRecord(false);
-    apiInterface.setRoutingOnNoMockData(true);
+    getApiInterface().setMockActive(null);
+    getApiInterface().setMockActiveOnStartup(null);
+    getApiInterface().setRecord(false);
+    getApiInterface().setRoutingOnNoMockData(true);
   }
 
   @Override
   protected void setPropertiesInterfaceMethodForTest()
   {
-    apiMethod.setMockActive(false);
-    apiMethod.setMockActiveOnStartup(false);
-    apiMethod.setRecord(false);
-    apiMethod.setRoutingOnNoMockData(true);
+    getApiInterfaceMethod().setMockActive(false);
+    getApiInterfaceMethod().setMockActiveOnStartup(false);
+    getApiInterfaceMethod().setRecord(false);
+    getApiInterfaceMethod().setRoutingOnNoMockData(true);
 
     addMockData("MD1", true, "1", "m_one_m");
     addMockData("MD4", true, "4", "m_four_m");

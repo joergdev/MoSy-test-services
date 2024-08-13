@@ -15,35 +15,35 @@ public class UnmockedTest
 
     try
     {
-      SoapServiceClientPortSingleton.getInstance().setUrl("http://localhost:5432/soap");
+      SoapServiceClientPortSingleton.getInstance().initService("http://localhost:5432/soap");
 
       // testcase 1
-      String response = SoapServiceClientPortSingleton.getInstance().invoke("1", null, null);
+      String response = SoapServiceClientPortSingleton.getInstance().invoke("1", null, null, null);
 
       assertEquals("one", response);
 
       // testcase 2
-      response = SoapServiceClientPortSingleton.getInstance().invoke("2", null, null);
+      response = SoapServiceClientPortSingleton.getInstance().invoke("2", null, null, null);
 
       assertEquals("two", response);
 
       // testcase 3
-      response = SoapServiceClientPortSingleton.getInstance().invoke("3", null, null);
+      response = SoapServiceClientPortSingleton.getInstance().invoke("3", null, null, null);
 
       assertEquals("three", response);
 
       // testcase 4
-      response = SoapServiceClientPortSingleton.getInstance().invoke("4", null, null);
+      response = SoapServiceClientPortSingleton.getInstance().invoke("4", null, null, null);
 
       assertEquals("four", response);
 
       // testcase 5
-      response = SoapServiceClientPortSingleton.getInstance().invoke("5", null, null);
+      response = SoapServiceClientPortSingleton.getInstance().invoke("5", null, null, null);
 
       assertEquals("five", response);
 
       // testcase 6
-      response = SoapServiceClientPortSingleton.getInstance().invoke("E", null, null);
+      response = SoapServiceClientPortSingleton.getInstance().invoke("E", null, null, null);
 
       assertEquals("!ERROR!", response);
     }

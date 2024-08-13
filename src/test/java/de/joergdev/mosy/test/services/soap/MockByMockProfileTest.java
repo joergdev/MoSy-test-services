@@ -28,8 +28,8 @@ public class MockByMockProfileTest extends AbstractSoapServiceClientTest
     }
     catch (SOAPFaultException ex)
     {
-      assertTrue(ex.getMessage(), ex.getMessage().contains("[ERROR]") && ex.getMessage()
-          .contains("Operation failed [no mockdata for interface SoapService, method testMethod"));
+      assertTrue(ex.getMessage(),
+          ex.getMessage().contains("[ERROR]") && ex.getMessage().contains("Operation failed [no mockdata for interface SoapService, method testMethod"));
     }
 
     // Mockdata active for mockSession matching
@@ -47,8 +47,8 @@ public class MockByMockProfileTest extends AbstractSoapServiceClientTest
     }
     catch (SOAPFaultException ex)
     {
-      assertTrue(ex.getMessage(), ex.getMessage().contains("[ERROR]") && ex.getMessage()
-          .contains("Operation failed [no mockdata for interface SoapService, method testMethod"));
+      assertTrue(ex.getMessage(),
+          ex.getMessage().contains("[ERROR]") && ex.getMessage().contains("Operation failed [no mockdata for interface SoapService, method testMethod"));
     }
 
     // Mockdata active for mocksession matching
@@ -69,36 +69,36 @@ public class MockByMockProfileTest extends AbstractSoapServiceClientTest
     }
     catch (SOAPFaultException ex)
     {
-      assertTrue(ex.getMessage(), ex.getMessage().contains("[ERROR]") && ex.getMessage()
-          .contains("Operation failed [no mockdata for interface SoapService, method testMethod"));
+      assertTrue(ex.getMessage(),
+          ex.getMessage().contains("[ERROR]") && ex.getMessage().contains("Operation failed [no mockdata for interface SoapService, method testMethod"));
     }
   }
 
   @Override
   protected void setPropertiesBaseData()
   {
-    apiBaseData.setMockActive(null);
-    apiBaseData.setMockActiveOnStartup(null);
-    apiBaseData.setRecord(false);
-    apiBaseData.setRoutingOnNoMockData(false);
+    getApiBaseData().setMockActive(null);
+    getApiBaseData().setMockActiveOnStartup(null);
+    getApiBaseData().setRecord(false);
+    getApiBaseData().setRoutingOnNoMockData(false);
   }
 
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockActive(null);
-    apiInterface.setMockActiveOnStartup(null);
-    apiInterface.setRecord(false);
-    apiInterface.setRoutingOnNoMockData(false);
+    getApiInterface().setMockActive(null);
+    getApiInterface().setMockActiveOnStartup(null);
+    getApiInterface().setRecord(false);
+    getApiInterface().setRoutingOnNoMockData(false);
   }
 
   @Override
   protected void setPropertiesInterfaceMethodForTest()
   {
-    apiMethod.setRoutingOnNoMockData(false);
-    apiMethod.setMockActive(true);
-    apiMethod.setMockActiveOnStartup(true);
-    apiMethod.setRecord(false);
+    getApiInterfaceMethod().setRoutingOnNoMockData(false);
+    getApiInterfaceMethod().setMockActive(true);
+    getApiInterfaceMethod().setMockActiveOnStartup(true);
+    getApiInterfaceMethod().setRecord(false);
 
     apiMockProfileActiveCommonMockdataUsage = createMockProfile("active", true);
     apiMockProfileActiveNoCommonMockdataUsage = createMockProfile("active_non_common", false);

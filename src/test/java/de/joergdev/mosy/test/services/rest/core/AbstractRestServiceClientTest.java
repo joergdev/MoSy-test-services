@@ -1,6 +1,6 @@
 package de.joergdev.mosy.test.services.rest.core;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.ws.rs.core.Response;
@@ -15,7 +15,6 @@ import de.joergdev.mosy.test.services.rest.model.TestableModel;
 
 public abstract class AbstractRestServiceClientTest extends AbstractServiceClientTest
 {
-  protected InterfaceMethod apiMethodGET = apiMethod;
   protected InterfaceMethod apiMethodPUT = getDefaultInterfaceMethodPUT();
   protected InterfaceMethod apiMethodPOST = getDefaultInterfaceMethodPOST();
   protected InterfaceMethod apiMethodDELETE = getDefaultInterfaceMethodDELETE();
@@ -33,8 +32,7 @@ public abstract class AbstractRestServiceClientTest extends AbstractServiceClien
     RestService.main(null);
 
     // set endpoint to mosy
-    RestServiceClientPortSingleton.getInstance()
-        .setBaseUrl(Resources.getProperty("api_endpoint") + "/mock-services/rest/localhost:5432/api");
+    RestServiceClientPortSingleton.getInstance().setBaseUrl(Resources.getProperty("api_endpoint") + "/mock-services/rest/localhost:5432/api");
 
     // save additional methods
     apiMethodPUT = assureInterfaceMethodExists(apiMethodPUT);
@@ -44,6 +42,12 @@ public abstract class AbstractRestServiceClientTest extends AbstractServiceClien
     apiMethodPOSTCar = assureInterfaceMethodExists(apiMethodPOSTCar);
   }
 
+  public InterfaceMethod getApiMethodGET()
+  {
+    return getApiInterfaceMethod();
+  }
+
+  @Override
   protected Interface getDefaultInterface()
   {
     Interface apiInterface = super.getDefaultInterface();
@@ -58,6 +62,7 @@ public abstract class AbstractRestServiceClientTest extends AbstractServiceClien
   /**
    * return GET Method cars
    */
+  @Override
   protected InterfaceMethod getDefaultInterfaceMethod()
   {
     InterfaceMethod apiMethod = super.getDefaultInterfaceMethod();
@@ -124,67 +129,58 @@ public abstract class AbstractRestServiceClientTest extends AbstractServiceClien
     invokeWsCall(method, (TestableModel) null, assertedHttpStatus, assertion);
   }
 
-  protected void invokeWsCall(InterfaceMethod method, Integer assertedHttpStatus, String assertion,
-                              Map<String, Object> urlArguments)
+  protected void invokeWsCall(InterfaceMethod method, Integer assertedHttpStatus, String assertion, Map<String, Object> urlArguments)
     throws Exception
   {
     invokeWsCall(method, null, urlArguments, null, null, null, assertedHttpStatus, assertion);
   }
 
-  protected void invokeWsCall(InterfaceMethod method, Integer assertedHttpStatus, String mockProfileName,
-                              String assertion)
+  protected void invokeWsCall(InterfaceMethod method, Integer assertedHttpStatus, String mockProfileName, String assertion)
     throws Exception
   {
     invokeWsCall(method, null, mockProfileName, null, assertedHttpStatus, assertion);
   }
 
-  protected void invokeWsCall(InterfaceMethod method, TestableModel model, Integer assertedHttpStatus,
-                              String assertion)
+  protected void invokeWsCall(InterfaceMethod method, TestableModel model, Integer assertedHttpStatus, String assertion)
     throws Exception
   {
     invokeWsCall(method, model, null, null, assertedHttpStatus, assertion);
   }
 
-  protected void invokeWsCall(InterfaceMethod method, String mockProfileName, Integer recordSessionID,
-                              Integer assertedHttpStatus, String assertion)
+  protected void invokeWsCall(InterfaceMethod method, String mockProfileName, Integer recordSessionID, Integer assertedHttpStatus, String assertion)
     throws Exception
   {
     invokeWsCall(method, null, mockProfileName, recordSessionID, assertedHttpStatus, assertion);
   }
 
-  protected void invokeWsCall(InterfaceMethod method, TestableModel model, String mockProfileName,
-                              Integer recordSessionID, Integer assertedHttpStatus, String assertion)
+  protected void invokeWsCall(InterfaceMethod method, TestableModel model, String mockProfileName, Integer recordSessionID, Integer assertedHttpStatus,
+                              String assertion)
     throws Exception
   {
     invokeWsCall(method, null, model, mockProfileName, recordSessionID, assertedHttpStatus, assertion);
   }
 
-  protected void invokeWsCall(InterfaceMethod method, Map<String, String> pathParams,
-                              Integer assertedHttpStatus, String assertion)
+  protected void invokeWsCall(InterfaceMethod method, Map<String, String> pathParams, Integer assertedHttpStatus, String assertion)
     throws Exception
   {
     invokeWsCall(method, pathParams, null, assertedHttpStatus, assertion);
   }
 
-  protected void invokeWsCall(InterfaceMethod method, Map<String, String> pathParams, TestableModel model,
-                              Integer assertedHttpStatus, String assertion)
+  protected void invokeWsCall(InterfaceMethod method, Map<String, String> pathParams, TestableModel model, Integer assertedHttpStatus, String assertion)
     throws Exception
   {
     invokeWsCall(method, pathParams, model, null, null, assertedHttpStatus, assertion);
   }
 
-  protected void invokeWsCall(InterfaceMethod method, Map<String, String> pathParams, TestableModel model,
-                              String mockProfileName, Integer recordSessionID, Integer assertedHttpStatus,
-                              String assertion)
+  protected void invokeWsCall(InterfaceMethod method, Map<String, String> pathParams, TestableModel model, String mockProfileName, Integer recordSessionID,
+                              Integer assertedHttpStatus, String assertion)
     throws Exception
   {
-    invokeWsCall(method, pathParams, null, model, mockProfileName, recordSessionID, assertedHttpStatus,
-        assertion);
+    invokeWsCall(method, pathParams, null, model, mockProfileName, recordSessionID, assertedHttpStatus, assertion);
   }
 
-  protected void invokeWsCall(InterfaceMethod method, Map<String, String> pathParams,
-                              Map<String, Object> urlArguments, TestableModel model, String mockProfileName,
-                              Integer recordSessionID, Integer assertedHttpStatus, String assertion)
+  protected void invokeWsCall(InterfaceMethod method, Map<String, String> pathParams, Map<String, Object> urlArguments, TestableModel model,
+                              String mockProfileName, Integer recordSessionID, Integer assertedHttpStatus, String assertion)
     throws Exception
   {
     String urlPath = method.getServicePath();
@@ -197,15 +193,14 @@ public abstract class AbstractRestServiceClientTest extends AbstractServiceClien
       }
     }
 
-    Response result = RestServiceClientPortSingleton.getInstance().invoke(method.getHttpMethod(), urlPath,
-        model, mockProfileName, recordSessionID, urlArguments);
+    Response result = RestServiceClientPortSingleton.getInstance().invoke(method.getHttpMethod(), urlPath, model, mockProfileName, recordSessionID,
+        urlArguments);
 
     assertEquals(assertedHttpStatus, Integer.valueOf(result.getStatus()));
 
     if (!Utils.isEmpty(assertion))
     {
-      assertEquals(Utils.formatJSON(assertion, false),
-          Utils.formatJSON(result.readEntity(String.class), false));
+      assertEquals(Utils.formatJSON(assertion, false), Utils.formatJSON(result.readEntity(String.class), false));
     }
   }
 }
