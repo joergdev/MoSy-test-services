@@ -36,7 +36,7 @@ public abstract class AbstractSoapServiceClientTest extends AbstractServiceClien
     }
   }
 
-  private void setSoapServiceEndpointToMosyMockService()
+  protected void setSoapServiceEndpointToMosyMockService()
   {
     SoapServiceClientPortSingleton.getInstance().initService(null);
   }

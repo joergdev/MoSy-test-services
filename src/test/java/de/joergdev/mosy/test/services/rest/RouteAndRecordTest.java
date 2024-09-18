@@ -20,9 +20,14 @@ public class RouteAndRecordTest extends AbstractRestServiceClientTest
     invokeWsCall(getApiMethodGET(), 200,
         "{\"cars\":[{\"id\":1,\"type\":\"Audi\",\"age\":5},{\"id\":2,\"type\":\"VW\",\"age\":1},{\"id\":3,\"type\":\"BMW\",\"age\":10}]}");
 
+    invokeWsCall(getApiInterfaceMethod(), 200, "{\"cars\":[{\"id\":1,\"type\":\"Audi\",\"age\":5}]}",
+        Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")));
+
+    invokeWsCall(getApiInterfaceMethod(), 200, "{\"cars\":[{\"id\":3,\"type\":\"BMW\",\"age\":10}]}", Utils.mapOfEntries(Utils.mapEntry("age", "10")));
+
     invokeWsCall(getApiInterfaceMethod(), 200,
         "{\"cars\":[{\"id\":1,\"type\":\"Audi\",\"age\":5},{\"id\":2,\"type\":\"VW\",\"age\":1},{\"id\":3,\"type\":\"BMW\",\"age\":10}]}",
-        Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")));
+        Utils.mapOfEntries(Utils.mapEntry("stage", "test")));
 
     invokeWsCall(apiMethodDELETE, Utils.mapOfEntries(Utils.mapEntry("id", "666")), 410, null);
     invokeWsCall(apiMethodDELETE, Utils.mapOfEntries(Utils.mapEntry("id", "777")), 410, "Already deleted");
@@ -48,29 +53,35 @@ public class RouteAndRecordTest extends AbstractRestServiceClientTest
         new Subpart("subpartX", 7), null, null, 200, Utils.object2Json(new Subpart("subpartX", 7)));
 
     // check Records
-    List<Record> records = checkRecordsSaved(ldtStart, 8);
+    List<Record> records = checkRecordsSaved(ldtStart, 10);
 
     checkRecord(records, 0, null, null, null, 200, Utils
         .formatJSON("{\"cars\":[{\"id\":1,\"type\":\"Audi\",\"age\":5},{\"id\":2,\"type\":\"VW\",\"age\":1},{\"id\":3,\"type\":\"BMW\",\"age\":10}]}", true));
 
-    checkRecord(records, 1, null, Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")), null, 200, Utils
+    checkRecord(records, 1, null, Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")), null, 200,
+        Utils.formatJSON("{\"cars\":[{\"id\":1,\"type\":\"Audi\",\"age\":5}]}", true));
+
+    checkRecord(records, 2, null, Utils.mapOfEntries(Utils.mapEntry("age", "10")), null, 200,
+        Utils.formatJSON("{\"cars\":[{\"id\":3,\"type\":\"BMW\",\"age\":10}]}", true));
+
+    checkRecord(records, 3, null, Utils.mapOfEntries(Utils.mapEntry("stage", "test")), null, 200, Utils
         .formatJSON("{\"cars\":[{\"id\":1,\"type\":\"Audi\",\"age\":5},{\"id\":2,\"type\":\"VW\",\"age\":1},{\"id\":3,\"type\":\"BMW\",\"age\":10}]}", true));
 
-    checkRecord(records, 2, Utils.mapOfEntries(Utils.mapEntry("id", "666")), null, null, 410, null);
-    checkRecord(records, 3, Utils.mapOfEntries(Utils.mapEntry("id", "777")), null, null, 410, "Already deleted");
-    checkRecord(records, 4, Utils.mapOfEntries(Utils.mapEntry("id", "123")), null, null, 202, "Deleted /api/cars/123");
+    checkRecord(records, 4, Utils.mapOfEntries(Utils.mapEntry("id", "666")), null, null, 410, null);
+    checkRecord(records, 5, Utils.mapOfEntries(Utils.mapEntry("id", "777")), null, null, 410, "Already deleted");
+    checkRecord(records, 6, Utils.mapOfEntries(Utils.mapEntry("id", "123")), null, null, 202, "Deleted /api/cars/123");
 
-    checkRecord(records, 5, null, null, Utils.formatJSON(Utils.object2Json(new Car("Audi", 10), false), true), 200,
+    checkRecord(records, 7, null, null, Utils.formatJSON(Utils.object2Json(new Car("Audi", 10), false), true), 200,
         Utils.formatJSON(Utils.object2Json(new Car(123, "Audi", 10)), true));
 
-    checkRecord(records, 6, Utils.mapOfEntries( //
+    checkRecord(records, 8, Utils.mapOfEntries( //
         Utils.mapEntry("id", "222"), //
         Utils.mapEntry("partid", "333"), //
         Utils.mapEntry("subpartid", "444")), //
         null, Utils.formatJSON(Utils.object2Json(new Subpart("subpartX", 7), false), true), 200,
         Utils.formatJSON(Utils.object2Json(new Subpart("subpartX", 7)), true));
 
-    checkRecord(records, 7, Utils.mapOfEntries( //
+    checkRecord(records, 9, Utils.mapOfEntries( //
         Utils.mapEntry("id", "222"), //
         Utils.mapEntry("partid", "333"), //
         Utils.mapEntry("subpartid", "444")), //

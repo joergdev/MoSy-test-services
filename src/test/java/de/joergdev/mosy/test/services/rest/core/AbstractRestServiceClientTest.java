@@ -32,7 +32,7 @@ public abstract class AbstractRestServiceClientTest extends AbstractServiceClien
     RestService.main(null);
 
     // set endpoint to mosy
-    RestServiceClientPortSingleton.getInstance().setBaseUrl(Resources.getProperty("api_endpoint") + "/mock-services/rest/localhost:5432/api");
+    RestServiceClientPortSingleton.getInstance().setBaseUrl(Resources.getApiEndpoint() + "/mock-services/rest/localhost:5432/api");
 
     // save additional methods
     apiMethodPUT = assureInterfaceMethodExists(apiMethodPUT);
