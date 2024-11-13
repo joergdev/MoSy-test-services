@@ -25,30 +25,25 @@ public class MockByMockdataTest extends AbstractRestServiceClientTest
     throws Exception
   {
     // GET 200
-    invokeWsCall(apiMethod, 200, MOCK_RESULT_GET_CARS);
+    invokeWsCall(getApiInterfaceMethod(), 200, MOCK_RESULT_GET_CARS);
 
     // GET 200 - urlArg stage=dev
-    invokeWsCall(apiMethod, 200, MOCK_RESULT_GET_CARS_DEV,
-        Utils.mapOfEntries(Utils.mapEntry("stage", "dev")));
+    invokeWsCall(getApiInterfaceMethod(), 200, MOCK_RESULT_GET_CARS_DEV, Utils.mapOfEntries(Utils.mapEntry("stage", "dev")));
 
     // GET 200 - urlArg stage=test
-    invokeWsCall(apiMethod, 200, MOCK_RESULT_GET_CARS_TEST,
-        Utils.mapOfEntries(Utils.mapEntry("stage", "test")));
+    invokeWsCall(getApiInterfaceMethod(), 200, MOCK_RESULT_GET_CARS_TEST, Utils.mapOfEntries(Utils.mapEntry("stage", "test")));
 
     // GET 200 - urlArg stage=test&age=5
-    invokeWsCall(apiMethod, 200, MOCK_RESULT_GET_CARS_TEST_AGE5,
-        Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")));
+    invokeWsCall(getApiInterfaceMethod(), 200, MOCK_RESULT_GET_CARS_TEST_AGE5, Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")));
 
     // GET 200 - urlArg stage=nonexists => no match for urlArg, may return result for get common
-    invokeWsCall(apiMethod, 200, MOCK_RESULT_GET_CARS,
-        Utils.mapOfEntries(Utils.mapEntry("stage", "nonexists")));
+    invokeWsCall(getApiInterfaceMethod(), 200, MOCK_RESULT_GET_CARS, Utils.mapOfEntries(Utils.mapEntry("stage", "nonexists")));
 
     // GET 200 - urlArg stage=test&age=6 => no match for urlArg age=6, may return result for get with urlArg stage=test
-    invokeWsCall(apiMethod, 200, MOCK_RESULT_GET_CARS_TEST,
-        Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "6")));
+    invokeWsCall(getApiInterfaceMethod(), 200, MOCK_RESULT_GET_CARS_TEST, Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "6")));
 
     // GET 404
-    invokeWsCall(apiMethod, 404, "MP1", (String) null);
+    invokeWsCall(getApiInterfaceMethod(), 404, "MP1", (String) null);
 
     // PUT 201
     invokeWsCall(apiMethodPUT, new Car(123, "Fiat alt", 5), 201, MOCK_RESULT_PUT_CAR_123);
@@ -175,19 +170,19 @@ public class MockByMockdataTest extends AbstractRestServiceClientTest
   @Override
   protected void setPropertiesBaseData()
   {
-    apiBaseData.setMockActive(null);
-    apiBaseData.setMockActiveOnStartup(null);
-    apiBaseData.setRecord(false);
-    apiBaseData.setRoutingOnNoMockData(false);
+    getApiBaseData().setMockActive(null);
+    getApiBaseData().setMockActiveOnStartup(null);
+    getApiBaseData().setRecord(false);
+    getApiBaseData().setRoutingOnNoMockData(false);
   }
 
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockActive(null);
-    apiInterface.setMockActiveOnStartup(null);
-    apiInterface.setRecord(false);
-    apiInterface.setRoutingOnNoMockData(false);
+    getApiInterface().setMockActive(null);
+    getApiInterface().setMockActiveOnStartup(null);
+    getApiInterface().setRecord(false);
+    getApiInterface().setRoutingOnNoMockData(false);
   }
 
   @Override
@@ -195,71 +190,60 @@ public class MockByMockdataTest extends AbstractRestServiceClientTest
   {
     // mock is active for all methods
 
-    addMockData(apiMethod, "MD1_get", true, null, MOCK_RESULT_GET_CARS, 200);
+    addMockData(getApiInterfaceMethod(), "MD1_get", true, null, MOCK_RESULT_GET_CARS, 200);
 
-    addMockData(apiMethod, "MD1_get_urlArg_stageDev", true, null, MOCK_RESULT_GET_CARS_DEV, null, true, 200,
-        null, Utils.mapOfEntries(Utils.mapEntry("stage", "dev")), null);
+    addMockData(getApiInterfaceMethod(), "MD1_get_urlArg_stageDev", true, null, MOCK_RESULT_GET_CARS_DEV, null, true, 200, null,
+        Utils.mapOfEntries(Utils.mapEntry("stage", "dev")), null);
 
-    addMockData(apiMethod, "MD1_get_urlArg_stageTest", true, null, MOCK_RESULT_GET_CARS_TEST, null, true, 200,
-        null, Utils.mapOfEntries(Utils.mapEntry("stage", "test")), null);
+    addMockData(getApiInterfaceMethod(), "MD1_get_urlArg_stageTest", true, null, MOCK_RESULT_GET_CARS_TEST, null, true, 200, null,
+        Utils.mapOfEntries(Utils.mapEntry("stage", "test")), null);
 
-    addMockData(apiMethod, "MD1_get_urlArg_stageTest_age5", true, null, MOCK_RESULT_GET_CARS_TEST_AGE5, null,
-        true, 200, null, Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")),
-        null);
+    addMockData(getApiInterfaceMethod(), "MD1_get_urlArg_stageTest_age5", true, null, MOCK_RESULT_GET_CARS_TEST_AGE5, null, true, 200, null,
+        Utils.mapOfEntries(Utils.mapEntry("stage", "test"), Utils.mapEntry("age", "5")), null);
 
     MockProfile mp1 = createMockProfile("MP1", false);
-    addMockData(apiMethod, "MD1_get_404", true, null, null, mp1, false, 404);
+    addMockData(getApiInterfaceMethod(), "MD1_get_404", true, null, null, mp1, false, 404);
 
-    addMockData(apiMethodPUT, "MD2_put", true, "{\"id\":123,\"type\":\"Fiat alt\",\"age\":5}",
-        MOCK_RESULT_PUT_CAR_123, 201);
-    addMockData(apiMethodPUT, "MD3_put", true,
-        Utils.formatJSON("{\"id\":1234,\"type\":\"Fiat alt\",\"age\":6}", true),
+    addMockData(apiMethodPUT, "MD2_put", true, "{\"id\":123,\"type\":\"Fiat alt\",\"age\":5}", MOCK_RESULT_PUT_CAR_123, 201);
+    addMockData(apiMethodPUT, "MD3_put", true, Utils.formatJSON("{\"id\":1234,\"type\":\"Fiat alt\",\"age\":6}", true),
         Utils.formatJSON(MOCK_RESULT_PUT_CAR_1234, true), 201);
 
-    addMockData(apiMethodPOST, "MD4_post", true, "{\"id\":null,\"type\":\"Porsche\",\"age\":20}",
-        MOCK_RESULT_POST_CAR_PORSCHE, 201);
-    addMockData(apiMethodPOST, "MD5_post", true, "{\"type\":\"Opel\",\"age\":18}", MOCK_RESULT_POST_CAR_OPEL,
-        201);
+    addMockData(apiMethodPOST, "MD4_post", true, "{\"id\":null,\"type\":\"Porsche\",\"age\":20}", MOCK_RESULT_POST_CAR_PORSCHE, 201);
+    addMockData(apiMethodPOST, "MD5_post", true, "{\"type\":\"Opel\",\"age\":18}", MOCK_RESULT_POST_CAR_OPEL, 201);
 
     addMockData(apiMethodPOST, "MD6_post", true, "{\"type\":\"NoContentCar\",\"age\":11}", null, 204);
 
-    addMockData(apiMethodDELETE, "MD7_DELETE", true, null, null, 204,
-        Utils.mapOfEntries(Utils.mapEntry("id", "3334")));
-    addMockData(apiMethodDELETE, "MD8_DELETE", true, null, null, 200,
-        Utils.mapOfEntries(Utils.mapEntry("id", "3335")));
+    addMockData(apiMethodDELETE, "MD7_DELETE", true, null, null, 204, Utils.mapOfEntries(Utils.mapEntry("id", "3334")));
+    addMockData(apiMethodDELETE, "MD8_DELETE", true, null, null, 200, Utils.mapOfEntries(Utils.mapEntry("id", "3335")));
     addMockData(apiMethodDELETE, "MD9_DELETE", true, null, null, 202, null);
 
-    addMockData(apiMethodPOSTSubparts, "MD10_POST", true, obj2JSON(new Subpart(1000, "Doorwindow", 2)),
-        obj2JSON(new Subpart(1000, "Doorwindow", 3)), 200, Utils.mapOfEntries(Utils.mapEntry("id", "1"), //
+    addMockData(apiMethodPOSTSubparts, "MD10_POST", true, obj2JSON(new Subpart(1000, "Doorwindow", 2)), obj2JSON(new Subpart(1000, "Doorwindow", 3)), 200,
+        Utils.mapOfEntries(Utils.mapEntry("id", "1"), //
             Utils.mapEntry("partid", "100"), //
             Utils.mapEntry("subpartid", "1000")));
 
-    addMockData(apiMethodPOSTSubparts, "MD11_POST", true, obj2JSON(new Subpart(2000, "Seatcushion", null)),
-        obj2JSON(new Subpart(2000, "Seatcushion", 11)), 200, Utils.mapOfEntries(Utils.mapEntry("id", "2"), //
+    addMockData(apiMethodPOSTSubparts, "MD11_POST", true, obj2JSON(new Subpart(2000, "Seatcushion", null)), obj2JSON(new Subpart(2000, "Seatcushion", 11)), 200,
+        Utils.mapOfEntries(Utils.mapEntry("id", "2"), //
             Utils.mapEntry("partid", "200"), //
             Utils.mapEntry("subpartid", "2000")));
 
-    addMockData(apiMethodPOSTSubparts, "MD12_POST", true, null,
-        obj2JSON(new Subpart(3000, "steeringWheelAirbag", 5)), 200,
+    addMockData(apiMethodPOSTSubparts, "MD12_POST", true, null, obj2JSON(new Subpart(3000, "steeringWheelAirbag", 5)), 200,
         Utils.mapOfEntries(Utils.mapEntry("id", "3"), //
             Utils.mapEntry("partid", "300"), //
             Utils.mapEntry("subpartid", "3000")));
 
-    addMockData(apiMethodPOSTSubparts, "MD13_POST", true, obj2JSON(new Subpart(4000, "WindowRegulator", 4)),
-        obj2JSON(new Subpart(4000, "WindowRegulator", 5)), 200, null);
+    addMockData(apiMethodPOSTSubparts, "MD13_POST", true, obj2JSON(new Subpart(4000, "WindowRegulator", 4)), obj2JSON(new Subpart(4000, "WindowRegulator", 5)),
+        200, null);
 
-    addMockData(apiMethodPOSTSubparts, "MD14_POST", true, obj2JSON(new Subpart(5000, "BrakeLight", 123456)),
-        obj2JSON(new Subpart(5000, "BrakeLight", 1234567)), 200,
-        Utils.mapOfEntries(Utils.mapEntry("partid", "500")));
+    addMockData(apiMethodPOSTSubparts, "MD14_POST", true, obj2JSON(new Subpart(5000, "BrakeLight", 123456)), obj2JSON(new Subpart(5000, "BrakeLight", 1234567)),
+        200, Utils.mapOfEntries(Utils.mapEntry("partid", "500")));
 
-    addMockData(apiMethodPOSTSubparts, "MD15_POST", true, obj2JSON(new Subpart(6000, "V-belt", 112)),
-        obj2JSON(new Subpart(6000, "V-belt", 113)), 200,
+    addMockData(apiMethodPOSTSubparts, "MD15_POST", true, obj2JSON(new Subpart(6000, "V-belt", 112)), obj2JSON(new Subpart(6000, "V-belt", 113)), 200,
         Utils.mapOfEntries(Utils.mapEntry("id", "6"), Utils.mapEntry("partid", "600")));
 
     // verifiy no requests for apiMethodPOSTSubparts cars/{id}/parts/{partid}/subparts/{subpartid} are catched by method cars/%
     addMockData(apiMethodPOSTCar, "MD16_POST", true, null,
-        "This Mockdata may not be used as request!!! If then there is a bug with the wildcard search in the method path",
-        500, null);
+        "This Mockdata may not be used as request!!! If then there is a bug with the wildcard search in the method path", 500, null);
   }
 
   private String obj2JSON(Object o)

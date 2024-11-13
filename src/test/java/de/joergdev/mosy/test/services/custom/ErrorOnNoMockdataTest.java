@@ -31,25 +31,25 @@ public class ErrorOnNoMockdataTest extends AbstractCustomServiceClientTest
   @Override
   protected void setPropertiesBaseData()
   {
-    apiBaseData.setMockActive(true);
-    apiBaseData.setMockActiveOnStartup(true);
-    apiBaseData.setRecord(false);
+    getApiBaseData().setMockActive(true);
+    getApiBaseData().setMockActiveOnStartup(true);
+    getApiBaseData().setRecord(false);
   }
 
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockActive(null);
-    apiInterface.setMockActiveOnStartup(null);
-    apiInterface.setRecord(false);
+    getApiInterface().setMockActive(null);
+    getApiInterface().setMockActiveOnStartup(null);
+    getApiInterface().setRecord(false);
   }
 
   @Override
   protected void setPropertiesInterfaceMethodForTest()
   {
-    apiMethod.setMockActive(false);
-    apiMethod.setMockActiveOnStartup(false);
-    apiMethod.setRecord(false);
+    getApiInterfaceMethod().setMockActive(false);
+    getApiInterfaceMethod().setMockActiveOnStartup(false);
+    getApiInterfaceMethod().setRecord(false);
 
     MockProfile apiMockProfile = createMockProfile("test", false);
 

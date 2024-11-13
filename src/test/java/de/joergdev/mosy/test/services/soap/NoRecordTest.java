@@ -21,28 +21,28 @@ public class NoRecordTest extends AbstractSoapServiceClientTest
   @Override
   protected void setPropertiesBaseData()
   {
-    apiBaseData.setMockActive(false);
-    apiBaseData.setMockActiveOnStartup(false);
-    apiBaseData.setRecord(false);
-    apiBaseData.setRoutingOnNoMockData(true);
+    getApiBaseData().setMockActive(false);
+    getApiBaseData().setMockActiveOnStartup(false);
+    getApiBaseData().setRecord(false);
+    getApiBaseData().setRoutingOnNoMockData(true);
   }
 
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockActive(true);
-    apiInterface.setMockActiveOnStartup(true);
-    apiInterface.setRecord(true);
-    apiInterface.setRoutingOnNoMockData(true);
+    getApiInterface().setMockActive(true);
+    getApiInterface().setMockActiveOnStartup(true);
+    getApiInterface().setRecord(true);
+    getApiInterface().setRoutingOnNoMockData(true);
   }
 
   @Override
   protected void setPropertiesInterfaceMethodForTest()
   {
-    apiMethod.setMockActive(true);
-    apiMethod.setMockActiveOnStartup(true);
-    apiMethod.setRecord(false);
-    apiMethod.setRoutingOnNoMockData(true);
+    getApiInterfaceMethod().setMockActive(true);
+    getApiInterfaceMethod().setMockActiveOnStartup(true);
+    getApiInterfaceMethod().setRecord(false);
+    getApiInterfaceMethod().setRoutingOnNoMockData(true);
 
     addRecordConfig("RC1", false, "1");
   }

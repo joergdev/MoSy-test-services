@@ -69,7 +69,7 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
 
     long timeStart = System.currentTimeMillis();
 
-    CustomRequestResponse response = mosyClient.customRequest(req, mockProfileName, recordSessionID);
+    CustomRequestResponse response = getApiClient().customRequest(req, mockProfileName, recordSessionID);
 
     checkDelay(timeStart, minDelay, maxDelay);
 
@@ -88,7 +88,7 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
         apiRecord.setRequestData(request);
         apiRecord.setResponse(result);
 
-        mosyClient.saveRecord(apiRecord);
+        getApiClient().saveRecord(apiRecord);
       }
     }
     // Mock
@@ -117,7 +117,7 @@ public abstract class AbstractCustomServiceClientTest extends AbstractServiceCli
 
   protected void addMockData(String title, boolean active, String requestAction, String returnValue, MockProfile apiMockProfile)
   {
-    addMockData(apiMethod, title, active, requestAction, returnValue, apiMockProfile, false, null, null, null, null);
+    addMockData(getApiInterfaceMethod(), title, active, requestAction, returnValue, apiMockProfile, false, null, null, null, null);
   }
 
   @Override

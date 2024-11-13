@@ -21,8 +21,7 @@ public class RestService
   {
     try
     {
-      com.sun.net.httpserver.HttpServer server = com.sun.net.httpserver.HttpServer
-          .create(new InetSocketAddress(5432), 0);
+      com.sun.net.httpserver.HttpServer server = com.sun.net.httpserver.HttpServer.create(new InetSocketAddress(5432), 0);
       server.createContext("/", new com.sun.net.httpserver.HttpHandler()
       {
         @Override
@@ -40,7 +39,18 @@ public class RestService
             // http://localhost:5432/api/cars
             if ("/api/cars".equals(path))
             {
-              response = Utils.object2Json(cars);
+              if (uri.getQuery() != null && uri.getQuery().contains("age=5"))
+              {
+                response = Utils.object2Json(getCarsForAge(5));
+              }
+              else if (uri.getQuery() != null && uri.getQuery().contains("age=10"))
+              {
+                response = Utils.object2Json(getCarsForAge(10));
+              }
+              else
+              {
+                response = Utils.object2Json(cars);
+              }
             }
           }
           else if (HttpMethod.DELETE.name().equals(exchange.getRequestMethod()))
@@ -90,6 +100,21 @@ public class RestService
     {
       th.printStackTrace();
     }
+  }
+
+  private static Cars getCarsForAge(int age)
+  {
+    Cars carsTmp = new Cars();
+
+    for (Car c : cars.getCars())
+    {
+      if (c.getAge() == age)
+      {
+        carsTmp.getCars().add(c);
+      }
+    }
+
+    return carsTmp;
   }
 
   private static Cars initModel()

@@ -21,35 +21,35 @@ public class RecordByRecordConfigTest extends AbstractSoapServiceClientTest
 
     List<Record> records = checkRecordsSaved(ldtStart, 1);
 
-    Record rec = mosyClient.loadRecord(records.get(0).getRecordId()).getRecord();
+    Record rec = getApiClient().loadRecord(records.get(0).getRecordId()).getRecord();
     assertTrue(rec.getRequestData().contains("2") && rec.getResponse().contains("two"));
   }
 
   @Override
   protected void setPropertiesBaseData()
   {
-    apiBaseData.setMockActive(false);
-    apiBaseData.setMockActiveOnStartup(false);
-    apiBaseData.setRecord(null);
-    apiBaseData.setRoutingOnNoMockData(true);
+    getApiBaseData().setMockActive(false);
+    getApiBaseData().setMockActiveOnStartup(false);
+    getApiBaseData().setRecord(null);
+    getApiBaseData().setRoutingOnNoMockData(true);
   }
 
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockActive(true);
-    apiInterface.setMockActiveOnStartup(true);
-    apiInterface.setRecord(null);
-    apiInterface.setRoutingOnNoMockData(true);
+    getApiInterface().setMockActive(true);
+    getApiInterface().setMockActiveOnStartup(true);
+    getApiInterface().setRecord(null);
+    getApiInterface().setRoutingOnNoMockData(true);
   }
 
   @Override
   protected void setPropertiesInterfaceMethodForTest()
   {
-    apiMethod.setMockActive(true);
-    apiMethod.setMockActiveOnStartup(true);
-    apiMethod.setRecord(null);
-    apiMethod.setRoutingOnNoMockData(true);
+    getApiInterfaceMethod().setMockActive(true);
+    getApiInterfaceMethod().setMockActiveOnStartup(true);
+    getApiInterfaceMethod().setRecord(null);
+    getApiInterfaceMethod().setRoutingOnNoMockData(true);
 
     addRecordConfig("RC1", false, "1");
     addRecordConfig("RC2", true, "2");

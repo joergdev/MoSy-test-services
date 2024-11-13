@@ -33,10 +33,10 @@ public class RecordGlobalTest extends AbstractSoapServiceClientTest
   @Override
   protected void setPropertiesBaseData()
   {
-    apiBaseData.setMockActive(true);
-    apiBaseData.setMockActiveOnStartup(true);
-    apiBaseData.setRecord(true);
-    apiBaseData.setRoutingOnNoMockData(true);
+    getApiBaseData().setMockActive(true);
+    getApiBaseData().setMockActiveOnStartup(true);
+    getApiBaseData().setRecord(true);
+    getApiBaseData().setRoutingOnNoMockData(true);
 
     rs1 = addRecordSession();
     rs2 = addRecordSession();
@@ -45,18 +45,18 @@ public class RecordGlobalTest extends AbstractSoapServiceClientTest
   @Override
   protected void setPropertiesInterfaceForTest()
   {
-    apiInterface.setMockActive(true);
-    apiInterface.setMockActiveOnStartup(true);
-    apiInterface.setRecord(false);
-    apiInterface.setRoutingOnNoMockData(true);
+    getApiInterface().setMockActive(true);
+    getApiInterface().setMockActiveOnStartup(true);
+    getApiInterface().setRecord(false);
+    getApiInterface().setRoutingOnNoMockData(true);
   }
 
   @Override
   protected void setPropertiesInterfaceMethodForTest()
   {
-    apiMethod.setMockActive(true);
-    apiMethod.setMockActiveOnStartup(true);
-    apiMethod.setRecord(false);
-    apiMethod.setRoutingOnNoMockData(true);
+    getApiInterfaceMethod().setMockActive(true);
+    getApiInterfaceMethod().setMockActiveOnStartup(true);
+    getApiInterfaceMethod().setRecord(false);
+    getApiInterfaceMethod().setRoutingOnNoMockData(true);
   }
 }
