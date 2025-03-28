@@ -3,12 +3,12 @@ package de.joergdev.mosy.test.services.soap.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import javax.jws.HandlerChain;
+import jakarta.jws.HandlerChain;
 import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
-import javax.xml.ws.WebEndpoint;
-import javax.xml.ws.WebServiceClient;
-import javax.xml.ws.WebServiceFeature;
+import jakarta.xml.ws.Service;
+import jakarta.xml.ws.WebEndpoint;
+import jakarta.xml.ws.WebServiceClient;
+import jakarta.xml.ws.WebServiceFeature;
 import de.joergdev.mosy.shared.Utils;
 
 @WebServiceClient(name = "SoapService", targetNamespace = "http://services.test.mosy.joergdev.de/")

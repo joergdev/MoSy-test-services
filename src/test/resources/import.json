@@ -1,0 +1,41 @@
+{
+    "interfaces": [{
+            "name": "Ifc1",
+            "type": "SOAP",
+            "servicePath": "Ifc1SvcPath",
+            "routingUrl": "http://services/Ifc1Service",
+            "routingOnNoMockData": true,
+            "methods": []
+        }, {
+            "name": "Ifc2",
+            "type": "SOAP",
+            "servicePath": "Ifc2SvcPath",
+            "routingUrl": "http://services/Ifc2Service",
+            "routingOnNoMockData": true,
+            "methods": [{
+                    "name": "ifc2Operation1",
+                    "servicePath": "ifc2Operation1SvcPath",
+                    "routingOnNoMockData": false,
+                    "mockActiveOnStartup": false,
+                    "mockActive": false
+                }
+            ]
+        }, {
+            "name": "Ifc3",
+            "type": "CUSTOM_XML",
+            "routingOnNoMockData": false,
+            "methods": [{
+                    "name": "ifc3Operation1",
+                    "routingOnNoMockData": true,
+                    "mockActiveOnStartup": true,
+                    "mockActive": true
+                }, {
+                    "name": "ifc3Operation2",
+                    "routingOnNoMockData": true,
+                    "mockActive": true,
+                    "mockActiveOnStartup": false
+                }
+            ]
+        }
+    ]
+}

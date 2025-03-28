@@ -3,7 +3,7 @@ package de.joergdev.mosy.test.services.rest;
 import static org.junit.Assert.*;
 import java.net.HttpURLConnection;
 import java.util.Map;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import org.junit.Test;
 import de.joergdev.mosy.api.model.HttpMethod;
 import de.joergdev.mosy.shared.Utils;

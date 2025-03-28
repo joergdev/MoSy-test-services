@@ -1,5 +1,7 @@
 package de.joergdev.mosy.test.services.soap.core;
 
+import java.util.Objects;
+
 public class SoapServiceClientPortSingleton
 {
   static final ThreadLocal<Integer> SOAP_TENANT_ID = new ThreadLocal<>();
@@ -8,6 +10,7 @@ public class SoapServiceClientPortSingleton
 
   private static SoapServiceClientPortSingleton instance = null;
   private SoapService service;
+  private String initialUrl;
 
   private SoapServiceClientPortSingleton()
   {
@@ -30,11 +33,13 @@ public class SoapServiceClientPortSingleton
    */
   public void initService(String url)
   {
-    if (!isServiceInitialised())
+    if (!isServiceInitialised() || !Objects.equals(url, initialUrl))
     {
       try
       {
         service = new SoapServiceService(url).getSoapServicePort();
+
+        initialUrl = url;
       }
       catch (Exception ex)
       {
