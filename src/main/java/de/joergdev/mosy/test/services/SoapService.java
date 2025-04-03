@@ -1,6 +1,6 @@
 package de.joergdev.mosy.test.services;
 
-import javax.xml.ws.Endpoint;
+import jakarta.xml.ws.Endpoint;
 
 public class SoapService
 {

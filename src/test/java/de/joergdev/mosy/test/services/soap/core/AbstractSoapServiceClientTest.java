@@ -30,7 +30,7 @@ public abstract class AbstractSoapServiceClientTest extends AbstractServiceClien
     // Relevant for multi-tenancy, in this case we cannot set the url on begin because it creates an request for the ?wsdl endoint.
     // This requires an tenantId in the http header.
     // So we have to wait for the creation and initialisation of the first tenant.
-    if (!SoapServiceClientPortSingleton.getInstance().isServiceInitialised())
+    if (!SoapServiceClientPortSingleton.getInstance().isServiceInitialised() || isMulitTanencyEnabled())
     {
       setSoapServiceEndpointToMosyMockService();
     }

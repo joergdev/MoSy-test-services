@@ -1,11 +1,11 @@
 
 package de.joergdev.mosy.test.services.soap.core;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
+import jakarta.jws.WebMethod;
+import jakarta.jws.WebParam;
+import jakarta.jws.WebResult;
+import jakarta.jws.WebService;
+import jakarta.jws.soap.SOAPBinding;
 
 @WebService(name = "SoapService", targetNamespace = "http://services.test.mosy.joergdev.de/")
 @SOAPBinding(style = SOAPBinding.Style.RPC)

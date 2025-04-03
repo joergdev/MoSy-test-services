@@ -1,7 +1,7 @@
 package de.joergdev.mosy.test.services.soap;
 
 import static org.junit.Assert.*;
-import javax.xml.ws.soap.SOAPFaultException;
+import jakarta.xml.ws.soap.SOAPFaultException;
 import de.joergdev.mosy.api.model.MockProfile;
 import de.joergdev.mosy.test.services.soap.core.AbstractSoapServiceClientTest;
 
