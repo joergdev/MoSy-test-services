@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+	<Appenders>
+		<!-- Rolling File Appender -->
+		<RollingFile name="Protokoll"
+			fileName="MoSyTestServices.log" filePattern="MoSyTestServices.log.%i">
+			<PatternLayout pattern="%d %-4r [%t] %-5p %c %x - %m%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="3000KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="20" />
+		</RollingFile>
+
+		<!-- Console Appender with PatternLayout -->
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d %-4r [%t] %-5p %c %x - %m%n" />
+		</Console>
+	</Appenders>
+
+	<Loggers>
+		<!-- Logger for de.joergdev.mosy -->
+		<Logger name="de.joergdev.mosy" level="INFO" additivity="false">
+			<AppenderRef ref="Protokoll" />
+			<AppenderRef ref="Console" />
+		</Logger>
+
+		<!-- Root Logger -->
+		<Root level="INFO">
+			<AppenderRef ref="Protokoll" />
+			<AppenderRef ref="Console" />
+		</Root>
+	</Loggers>
+</Configuration>

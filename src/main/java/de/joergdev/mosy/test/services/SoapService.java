@@ -1,5 +1,6 @@
 package de.joergdev.mosy.test.services;
 
+import org.apache.logging.log4j.LogManager;
 import jakarta.xml.ws.Endpoint;
 
 public class SoapService
@@ -12,7 +13,7 @@ public class SoapService
 
       Endpoint.publish(url, new SoapServiceImpl());
 
-      System.out.println("SoapService running, Endpoint: " + url);
+      LogManager.getLogger(SoapService.class).info("SoapService running, Endpoint: " + url);
     }
     catch (Throwable th)
     {
